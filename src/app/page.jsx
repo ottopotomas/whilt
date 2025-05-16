@@ -40,14 +40,20 @@ export default function Page() {
 
       {/* TIL Form */}
       <section className="bg-white max-w-xl mx-auto shadow-md rounded-xl p-6 mb-10">
-        <label htmlFor="til-input" className="block text-lg font-semibold mb-2">
+        <label htmlFor="til-question" className="block text-lg font-semibold mb-2">
           today i learned
         </label>
+        <input
+          type="text"
+          id="til-question"
+          className="w-full border border-gray-300 rounded-md p-3 mb-4"
+          placeholder="e.g. Photosynthesis"
+        />
         <textarea
-          id="til-input"
+          id="til-answer"
           className="w-full border border-gray-300 rounded-md p-3 mb-4"
           rows="3"
-          placeholder="e.g. photosynthesis / the process by which plants make energy"
+          placeholder="e.g. The process by which plants convert sunlight into energy."
         ></textarea>
         <div className="flex items-center justify-between">
           <label className="inline-flex items-center">
@@ -64,22 +70,34 @@ export default function Page() {
       <section className="max-w-2xl mx-auto">
         <h2 className="text-2xl font-bold mb-4">Trending TILs</h2>
         {tils.map((til) => (
-          <article key={til.id} className="bg-white rounded-xl shadow-md p-5 mb-4">
-            <div className="flex justify-between items-center mb-2">
-              <div>
-                <p className="font-semibold">{til.user.name}</p>
-                <p className="text-sm text-gray-500">{til.time}</p>
+          <article key={til.id} className="bg-white rounded-xl shadow-md p-6 mb-6 transition hover:shadow-lg">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="h-10 w-10 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center font-semibold">
+                {til.user.name.charAt(0)}
               </div>
-              <div className="text-right">
-                <p className="text-sm text-gray-500">⬆️ {til.votes}</p>
+              <div className="flex-1">
+                <p className="text-sm font-semibold text-gray-800">{til.user.name}</p>
+                <p className="text-xs text-gray-500">{til.time}</p>
               </div>
             </div>
-            <p className="font-medium text-teal-600 mb-1">TIL:</p>
-            <p><strong>Concept:</strong> {til.question}</p>
-            <p><strong>Answer:</strong> {til.answer}</p>
-            <div className="flex justify-between items-center mt-4">
-              <span className="text-xs bg-teal-100 text-teal-700 px-2 py-1 rounded-full">#{til.category.toLowerCase()}</span>
-              <button className="text-sm text-teal-600 hover:underline">ADD TIL</button>
+
+            <div className="mb-3">
+              <p className="text-sm text-gray-400 uppercase tracking-wide font-medium mb-1">TIL</p>
+              <p className="text-md font-semibold text-gray-900 mb-1">Concept:</p>
+              <p className="text-lg font-medium text-gray-900">{til.question}</p>
+              <p className="text-md font-semibold text-gray-900 mt-3 mb-1">Answer:</p>
+              <p className="text-gray-700 text-sm">{til.answer}</p>
+            </div>
+
+            <div className="flex justify-between items-center text-sm text-gray-600 mt-4">
+              <span className="bg-teal-100 text-teal-700 px-3 py-1 rounded-full text-xs font-medium">
+                #{til.category.toLowerCase()}
+              </span>
+              <div className="flex items-center gap-4">
+                <button className="hover:text-teal-600">⬆️ {til.votes}</button>
+                <button className="hover:text-teal-600">💬 {til.comments}</button>
+                <button className="text-teal-600 font-semibold hover:underline">ADD TIL</button>
+              </div>
             </div>
           </article>
         ))}
