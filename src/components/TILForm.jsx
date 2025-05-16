@@ -11,7 +11,7 @@ export default function TILForm() {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [category, setCategory] = useState("");
-  const [isPublic, setIsPublic] = useState(false);
+  const [isPublic, setIsPublic] = useState(true); // Default is public
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -77,14 +77,15 @@ export default function TILForm() {
       />
 
       <label className="flex items-center mb-4">
-        <input
-          type="checkbox"
-          checked={isPublic}
-          onChange={() => setIsPublic(!isPublic)}
-          className="mr-2"
-        />
-        Make this TIL public
-      </label>
+  <input
+    type="checkbox"
+    checked={!isPublic}
+    onChange={() => setIsPublic(!isPublic)}
+    className="mr-2"
+  />
+  Make this TIL private
+</label>
+
 
       <button
         type="submit"
