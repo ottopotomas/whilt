@@ -1,13 +1,7 @@
 import { supabase } from "../../../../lib/supabase";
 import CommentSection from "../../../components/CommentSection";
 
-interface TilPageProps {
-  params: {
-    id: string;
-  };
-}
-
-export default async function TilPage({ params }: TilPageProps) {
+export default async function Page({ params }: { params: { id: string } }) {
   const { id } = params;
 
   console.log("📥 Page received TIL ID:", id);
