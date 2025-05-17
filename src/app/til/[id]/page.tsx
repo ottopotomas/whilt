@@ -3,8 +3,7 @@ import CommentSection from "../../../components/CommentSection";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function TilPage({ params }: any) {
-  // Debug: log the TIL ID
-  console.log("🧠 params.id:", params.id);
+  console.log("🧠 Page params:", params);
 
   const { data: til, error } = await supabase
     .from("tils")
@@ -12,17 +11,30 @@ export default async function TilPage({ params }: any) {
     .eq("id", params.id)
     .single();
 
-  // Debug: log what Supabase returned
-  console.log("📦 supabase result:", til);
-  console.log("❌ supabase error:", error);
+  console.log("📦 Supabase TIL:", til);
+  console.log("❌ Supabase error:", error);
 
-  if (error || !til) return <p className="p-4">TIL not found.</p>;
+  if (error) {
+    return (
+      <div className="p-4">
+        <p>❌ Error fetching TIL: {error.message}</p>
+      </div>
+    );
+  }
+
+  if (!til) {
+    return (
+      <div className="p-4">
+        <p>⚠️ No TIL found for ID: {params.id}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6">
       <h1 className="text-xl font-bold">{til.question}</h1>
-      <p className="mt-2 text-gray-700">{til.answer}</p>
-      <p className="mt-1 text-sm text-gray-500">Category: {til.category}</p>
+      <p className="mt-2">{til.answer}</p>
+      <p className="text-sm text-gray-500">Category: {til.category}</p>
 
       <CommentSection tilId={til.id} />
     </div>
