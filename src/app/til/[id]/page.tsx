@@ -1,6 +1,6 @@
 import { supabase } from "../../../../lib/supabase";
 import CommentSection from "../../../components/CommentSection";
-import { type Metadata } from "next";
+
 
 interface PageProps {
   params: {
