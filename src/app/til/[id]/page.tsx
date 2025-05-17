@@ -1,27 +1,26 @@
 import { supabase } from "../../../../lib/supabase";
 import CommentSection from "../../../components/CommentSection";
 
-type Props = {
+interface TilPageProps {
   params: {
     id: string;
   };
-};
+}
 
-export default async function TilPage({ params }: Props) {
-  const id = params.id;
+export default async function TilPage({ params }: TilPageProps) {
+  const { id } = params;
 
   console.log("📥 Page received TIL ID:", id);
 
   const { data, error } = await supabase
     .from("tils")
     .select("*")
-    .eq("id", id)
-    .maybeSingle(); // ensures 0 or 1 row (no array)
+    .eq("id", id);
 
   console.log("📦 Supabase returned:", data);
   console.log("⚠️ Supabase error:", error);
 
-  if (error || !data) {
+  if (error || !data || data.length === 0) {
     return (
       <div className="p-4">
         <p>⚠️ No TIL found for this ID, or an error occurred.</p>
@@ -36,7 +35,7 @@ export default async function TilPage({ params }: Props) {
     );
   }
 
-  const til = data;
+  const til = data[0];
 
   return (
     <div className="p-6">
