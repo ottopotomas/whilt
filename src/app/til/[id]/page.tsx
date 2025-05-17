@@ -1,14 +1,9 @@
 import { supabase } from "../../../../lib/supabase";
 import CommentSection from "../../../components/CommentSection";
 
-type Props = {
-  params: {
-    id: string;
-  };
-};
-
-export default async function Page({ params }: Props) {
-  const id = params.id;
+// ✅ Don’t use any external PageProps — we define inline types.
+export default async function Page({ params }: { params: { id: string } }) {
+  const { id } = params;
 
   const { data, error } = await supabase
     .from("tils")
