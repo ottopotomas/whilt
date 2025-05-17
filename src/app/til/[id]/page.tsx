@@ -1,8 +1,14 @@
 import { supabase } from "../../../../lib/supabase";
 import CommentSection from "../../../components/CommentSection";
 
-export default async function TilPage({ params }: { params: { id: string } }) {
-  const id = params.id;
+type TilPageProps = {
+  params: {
+    id: string;
+  };
+};
+
+export default async function TilPage({ params }: TilPageProps) {
+  const { id } = params;
 
   const { data, error } = await supabase
     .from("tils")
@@ -30,7 +36,6 @@ export default async function TilPage({ params }: { params: { id: string } }) {
       <h1 className="text-xl font-bold">{data.question}</h1>
       <p className="mt-2 text-gray-700">{data.answer}</p>
       <p className="mt-1 text-sm text-gray-500">Category: {data.category}</p>
-
       <CommentSection tilId={data.id} />
     </div>
   );
