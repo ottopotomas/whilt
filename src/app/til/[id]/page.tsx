@@ -1,7 +1,8 @@
 import { supabase } from "../../../../lib/supabase";
 import CommentSection from "../../../components/CommentSection";
 
-export default async function TilPage(props: { params: { id: string } }) {
+// No typing, no destructuring — bypass Vercel's type bug
+export default async function TilPage(props: any) {
   const id = props?.params?.id;
 
   const { data, error } = await supabase
