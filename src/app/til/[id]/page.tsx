@@ -1,8 +1,14 @@
 import { supabase } from "../../../../lib/supabase";
 import CommentSection from "../../../components/CommentSection";
 
-export default async function TilPage({ params }: { params: { id: string } }) {
-  const { id } = params;
+type Props = {
+  params: {
+    id: string;
+  };
+};
+
+export default async function TilPage({ params }: Props) {
+  const id = params.id;
 
   console.log("📥 Page received TIL ID:", id);
 
@@ -10,7 +16,7 @@ export default async function TilPage({ params }: { params: { id: string } }) {
     .from("tils")
     .select("*")
     .eq("id", id)
-    .maybeSingle();
+    .maybeSingle(); // ensures 0 or 1 row (no array)
 
   console.log("📦 Supabase returned:", data);
   console.log("⚠️ Supabase error:", error);
@@ -30,12 +36,15 @@ export default async function TilPage({ params }: { params: { id: string } }) {
     );
   }
 
+  const til = data;
+
   return (
     <div className="p-6">
-      <h1 className="text-xl font-bold">{data.question}</h1>
-      <p className="mt-2 text-gray-700">{data.answer}</p>
-      <p className="mt-1 text-sm text-gray-500">Category: {data.category}</p>
-      <CommentSection tilId={data.id} />
+      <h1 className="text-xl font-bold">{til.question}</h1>
+      <p className="mt-2 text-gray-700">{til.answer}</p>
+      <p className="mt-1 text-sm text-gray-500">Category: {til.category}</p>
+
+      <CommentSection tilId={til.id} />
     </div>
   );
 }
