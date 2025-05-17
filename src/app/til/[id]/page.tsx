@@ -1,9 +1,8 @@
 import { supabase } from "../../../../lib/supabase";
 import CommentSection from "../../../components/CommentSection";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default async function TilPage(props: any) {
-  const id = props?.params?.id;
+export default async function TilPage(props: { params: { id: string } }) {
+  const id = props.params.id;
 
   console.log("📥 Page received TIL ID:", id);
 
@@ -11,12 +10,12 @@ export default async function TilPage(props: any) {
   .from("tils")
   .select("*")
   .eq("id", id)
-  .single();
+  .maybeSingle();
 
   console.log("📦 Supabase returned:", data);
   console.log("⚠️ Supabase error:", error);
 
-  if (error || !data || data.length === 0) {
+  if (error || !data) {
     return (
       <div className="p-4">
         <p>⚠️ No TIL found for this ID, or an error occurred.</p>
@@ -31,7 +30,7 @@ export default async function TilPage(props: any) {
     );
   }
 
-  const til = data[0];
+  const til = data;
 
   return (
     <div className="p-6">
