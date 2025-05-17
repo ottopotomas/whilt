@@ -1,13 +1,8 @@
 import { supabase } from "../../../../lib/supabase";
 import CommentSection from "../../../components/CommentSection";
 
-interface PageProps {
-  params: {
-    id: string;
-  };
-}
-
-export default async function TilPage({ params }: PageProps) {
+// ✅ Correct typing inline — avoid PageProps type errors
+export default async function TilPage({ params }: { params: { id: string } }) {
   const id = params.id;
 
   const { data, error } = await supabase
