@@ -1,8 +1,13 @@
 import { supabase } from "../../../../lib/supabase";
 import CommentSection from "../../../components/CommentSection";
 
-// ✅ Don’t use any external PageProps — we define inline types.
-export default async function Page({ params }: { params: { id: string } }) {
+type PageProps = {
+  params: {
+    id: string;
+  };
+};
+
+export default async function Page({ params }: PageProps) {
   const { id } = params;
 
   const { data, error } = await supabase
