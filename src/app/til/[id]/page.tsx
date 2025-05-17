@@ -1,18 +1,19 @@
 import { supabase } from "../../../../lib/supabase";
 import CommentSection from "../../../components/CommentSection";
 
-export default async function Page({ params }: { params: { id: string } }) {
-  const { id } = params;
+type PageProps = {
+  params: {
+    id: string;
+  };
+};
 
-  console.log("📥 Page received TIL ID:", id);
+export default async function Page({ params }: PageProps) {
+  const id = params.id;
 
   const { data, error } = await supabase
     .from("tils")
     .select("*")
     .eq("id", id);
-
-  console.log("📦 Supabase returned:", data);
-  console.log("⚠️ Supabase error:", error);
 
   if (error || !data || data.length === 0) {
     return (
@@ -36,7 +37,6 @@ export default async function Page({ params }: { params: { id: string } }) {
       <h1 className="text-xl font-bold">{til.question}</h1>
       <p className="mt-2 text-gray-700">{til.answer}</p>
       <p className="mt-1 text-sm text-gray-500">Category: {til.category}</p>
-
       <CommentSection tilId={til.id} />
     </div>
   );
