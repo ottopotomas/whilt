@@ -2,6 +2,7 @@ import { supabase } from "../../../../lib/supabase";
 import CommentSection from "../../../components/CommentSection";
 
 // No typing, no destructuring — bypass Vercel's type bug
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function TilPage(props: any) {
   const id = props?.params?.id;
 
