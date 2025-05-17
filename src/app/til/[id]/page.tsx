@@ -8,9 +8,10 @@ export default async function TilPage(props: any) {
   console.log("📥 Page received TIL ID:", id);
 
   const { data, error } = await supabase
-    .from("tils")
-    .select("*")
-    .eq("id", id);
+  .from("tils")
+  .select("*")
+  .eq("id", id)
+  .single();
 
   console.log("📦 Supabase returned:", data);
   console.log("⚠️ Supabase error:", error);
