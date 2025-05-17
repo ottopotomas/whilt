@@ -1,14 +1,7 @@
 import { supabase } from "../../../../lib/supabase";
 import CommentSection from "../../../components/CommentSection";
 
-
-interface PageProps {
-  params: {
-    id: string;
-  };
-}
-
-export default async function TilPage({ params }: PageProps) {
+export default async function TilPage({ params }: { params: { id: string } }) {
   const { data: til, error } = await supabase
     .from("tils")
     .select("*")
