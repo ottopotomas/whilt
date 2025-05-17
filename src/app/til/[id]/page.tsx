@@ -1,49 +1,54 @@
+'use client'; // Add this line to mark the file as a Client Component
+
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router'; // for dynamic routing
+import { useSearchParams } from 'next/navigation'; // Use useSearchParams instead of useRouter
 import { supabase } from '../../../../lib/supabase'; // Adjust path if necessary
 import CommentSection from '../../../components/CommentSection'; // Adjust path if necessary
 
-const TilPage: React.FC = () => {
-  const router = useRouter();
-  const { id } = router.query; // Dynamic route parameter 'id'
-  
-  const [til, setTil] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+interface TIL {
+  id: string;
+  question: string;
+  answer: string;
+  category: string;
+}
 
-  // Fetch TIL data based on the dynamic ID
+export default function TilPage() {
+  const [til, setTil] = useState<TIL | null>(null); // Add type for til state
+  const [error, setError] = useState<string | null>(null); // Allow for error string
+  const searchParams = useSearchParams();
+  const id = searchParams.get('id'); // Get the dynamic ID from search params
+
   useEffect(() => {
-    if (!id) return; // Wait until 'id' is available
+    if (!id) return;
 
-    const fetchTil = async () => {
-      const { data, error } = await supabase
-        .from('tils')
-        .select('*')
-        .eq('id', id)
-        .single(); // Fetch only one record
+    const fetchTIL = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('tils')
+          .select('*')
+          .eq('id', id);
 
-      if (error) {
-        console.error('Error fetching TIL:', error);
-      } else {
-        setTil(data);
+        if (error) throw error;
+        setTil(data ? data[0] : null); // Handle data properly
+      } catch (err) {
+        setError('Error fetching TIL');
       }
-      setLoading(false); // Set loading to false once the data is fetched
     };
 
-    fetchTil();
-  }, [id]); // Re-run effect when 'id' changes
+    fetchTIL();
+  }, [id]);
 
-  if (loading) return <p>Loading...</p>; // Show loading state while fetching data
+  if (error) return <p>{error}</p>;
 
-  if (!til) return <p>Sorry, no TIL found for this ID.</p>; // If no TIL is found for the ID
+  if (!til) return <p>Loading...</p>;
 
   return (
     <div className="p-6">
       <h1 className="text-xl font-bold">{til.question}</h1>
       <p className="mt-2 text-gray-700">{til.answer}</p>
       <p className="mt-1 text-sm text-gray-500">Category: {til.category}</p>
-      <CommentSection tilId={til.id} /> {/* Pass TIL ID to the comment section */}
+
+      <CommentSection tilId={til.id} />
     </div>
   );
-};
-
-export default TilPage;
+}
