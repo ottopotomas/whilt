@@ -1,12 +1,13 @@
 import { supabase } from "../../../../lib/supabase";
 import CommentSection from "../../../components/CommentSection";
 
-// Don't use any external types for props – declare inline to avoid type inference issues
-export default async function TilPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+type Props = {
+  params: {
+    id: string;
+  };
+};
+
+export default async function TilPage({ params }: Props) {
   const id = params.id;
 
   const { data, error } = await supabase
