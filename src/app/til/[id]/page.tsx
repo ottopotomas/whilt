@@ -1,22 +1,28 @@
 import { supabase } from "../../../../lib/supabase";
 import CommentSection from "../../../components/CommentSection";
 
-export default async function TilPage(props: { params: { id: string } }) {
-  const { id } = props.params;
+export default async function TilPage({ params }: { params: { id: string } }) {
+  const { id } = params;
 
-  const { data: til, error } = await supabase
+  const { data, error } = await supabase
     .from("tils")
     .select("*")
-    .eq("id", id)
-    .single();
+    .eq("id", id); // Removed `.single()` to debug
 
-  if (error || !til) {
+  console.log("🧠 Requested TIL ID:", id);
+  console.log("📦 Supabase returned:", data);
+  console.log("❌ Supabase error:", error);
+
+  if (error || !data || data.length === 0) {
     return (
       <div className="p-4">
-        <p>⚠️ TIL not found or error fetching it.</p>
+        <p>⚠️ No TIL found for this ID, or an error occurred.</p>
       </div>
     );
   }
+
+  // Just use the first item for now
+  const til = data[0];
 
   return (
     <div className="p-6">
