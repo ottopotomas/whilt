@@ -1,11 +1,17 @@
 // components/TilFeed.tsx
-"use client";
+interface TIL {
+  id: string;
+  question: string;
+  answer: string;
+  category: string;
+  created_at: string;
+}"use client";
 
 import { useEffect, useState } from "react";
 import { fetchPublicTils } from "../../lib/fetchTils";
 
 export default function TilFeed() {
-  const [tils, setTils] = useState<any[]>([]);
+ const [tils, setTils] = useState<TIL[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
