@@ -1,17 +1,19 @@
 // components/TilFeed.tsx
+"use client";
+
+import { useEffect, useState } from "react";
+import { fetchPublicTils } from "../../lib/fetchTils";
+
 interface TIL {
   id: string;
   question: string;
   answer: string;
   category: string;
   created_at: string;
-}"use client";
-
-import { useEffect, useState } from "react";
-import { fetchPublicTils } from "../../lib/fetchTils";
+}
 
 export default function TilFeed() {
- const [tils, setTils] = useState<TIL[]>([]);
+  const [tils, setTils] = useState<TIL[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -35,9 +37,7 @@ export default function TilFeed() {
           </div>
           <h3 className="text-lg font-bold">{til.question}</h3>
           <p className="text-gray-700">{til.answer}</p>
-          <div className="mt-2 text-xs">
-            Category: {til.category}
-          </div>
+          <div className="mt-2 text-xs">Category: {til.category}</div>
         </div>
       ))}
     </div>
