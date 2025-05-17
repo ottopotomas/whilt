@@ -1,5 +1,5 @@
 // lib/fetchTils.ts
-import { supabase } from "@/lib/supabase";
+import { supabase } from "./supabase";
 
 export async function fetchPublicTils() {
   const { data, error } = await supabase
