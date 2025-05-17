@@ -1,13 +1,13 @@
 import { supabase } from "../../../../lib/supabase";
 import CommentSection from "../../../components/CommentSection";
 
-export default async function TilPage(context: { params: { id: string } }) {
-  const id = context.params?.id;
+export default async function TilPage(props: { params: { id: string } }) {
+  const id = props?.params?.id;
 
   const { data, error } = await supabase
     .from("tils")
     .select("*")
-    .eq("id", id); // Still no `.single()` for safe testing
+    .eq("id", id);
 
   console.log("🧠 Requested TIL ID:", id);
   console.log("📦 Supabase returned:", data);
