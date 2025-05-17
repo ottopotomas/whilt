@@ -1,10 +1,6 @@
 import { supabase } from "../../../../lib/supabase";
 import CommentSection from "../../../components/CommentSection";
 
-export async function generateStaticParams() {
-  return []; // You can improve this later
-}
-
 export default async function TilDetailPage({
   params,
 }: {
@@ -33,15 +29,13 @@ export default async function TilDetailPage({
     );
   }
 
-  const til = data;
-
   return (
     <div className="p-6">
-      <h1 className="text-xl font-bold">{til.question}</h1>
-      <p className="mt-2 text-gray-700">{til.answer}</p>
-      <p className="mt-1 text-sm text-gray-500">Category: {til.category}</p>
+      <h1 className="text-xl font-bold">{data.question}</h1>
+      <p className="mt-2 text-gray-700">{data.answer}</p>
+      <p className="mt-1 text-sm text-gray-500">Category: {data.category}</p>
 
-      <CommentSection tilId={til.id} />
+      <CommentSection tilId={data.id} />
     </div>
   );
 }
