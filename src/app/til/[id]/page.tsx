@@ -3,11 +3,18 @@ import CommentSection from "../../../components/CommentSection";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function TilPage({ params }: any) {
+  // Debug: log the TIL ID
+  console.log("🧠 params.id:", params.id);
+
   const { data: til, error } = await supabase
     .from("tils")
     .select("*")
     .eq("id", params.id)
     .single();
+
+  // Debug: log what Supabase returned
+  console.log("📦 supabase result:", til);
+  console.log("❌ supabase error:", error);
 
   if (error || !til) return <p className="p-4">TIL not found.</p>;
 
