@@ -1,14 +1,19 @@
 import { supabase } from "../../../../lib/supabase";
 import CommentSection from "../../../components/CommentSection";
 
-// No custom types — let Next.js handle the params typing
-export default async function TilPage({ params }: any) {
+interface PageProps {
+  params: {
+    id: string;
+  };
+}
+
+export default async function TilPage({ params }: PageProps) {
   const id = params.id;
 
   const { data, error } = await supabase
     .from("tils")
     .select("*")
-    .eq("id", id); // no `.single()` for now to debug
+    .eq("id", id); // still no .single()
 
   console.log("🧠 Requested TIL ID:", id);
   console.log("📦 Supabase returned:", data);
@@ -22,7 +27,7 @@ export default async function TilPage({ params }: any) {
     );
   }
 
-  const til = data[0]; // Use the first item from the result array
+  const til = data[0];
 
   return (
     <div className="p-6">
