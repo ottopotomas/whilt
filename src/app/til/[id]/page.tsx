@@ -1,8 +1,15 @@
 import { supabase } from "../../../../lib/supabase";
 import CommentSection from "../../../components/CommentSection";
 
-// ✅ Correct typing inline — avoid PageProps type errors
-export default async function TilPage({ params }: { params: { id: string } }) {
+export async function generateStaticParams() {
+  return []; // You can improve this later
+}
+
+export default async function TilDetailPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const id = params.id;
 
   const { data, error } = await supabase
