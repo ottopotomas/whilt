@@ -16,24 +16,24 @@ function CommentSection({ tilId }: { tilId: string }) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    async function fetchComments() {
+      const { data, error } = await supabase
+        .from("comments")
+        .select("*")
+        .eq("til_id", tilId)
+        .order("created_at", { ascending: true });
+
+      if (!error) setComments(data || []);
+    }
+
     fetchComments();
-  }, []);
-
-  async function fetchComments() {
-    const { data, error } = await supabase
-      .from("comments")
-      .select("*")
-      .eq("til_id", tilId)
-      .order("created_at", { ascending: true });
-
-    if (!error) setComments(data || []);
-  }
+  }, [tilId]);
 
   async function postComment() {
     if (!newComment.trim()) return;
     setLoading(true);
 
-    const { data, error } = await supabase.from("comments").insert([
+    const { error } = await supabase.from("comments").insert([
       {
         til_id: tilId,
         content: newComment,
@@ -43,7 +43,13 @@ function CommentSection({ tilId }: { tilId: string }) {
 
     if (!error) {
       setNewComment("");
-      fetchComments();
+      const { data, error: fetchError } = await supabase
+        .from("comments")
+        .select("*")
+        .eq("til_id", tilId)
+        .order("created_at", { ascending: true });
+
+      if (!fetchError) setComments(data || []);
     }
 
     setLoading(false);
