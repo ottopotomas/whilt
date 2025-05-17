@@ -1,6 +1,7 @@
 import { supabase } from "../../../../lib/supabase";
 import CommentSection from "../../../components/CommentSection";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function TilPage({ params }: any) {
   const { data: til, error } = await supabase
     .from("tils")
