@@ -30,7 +30,7 @@ export default function TilPage() {
 
         if (error) throw error;
         setTil(data ? data[0] : null); // Handle data properly
-      } catch (err) {
+      } catch {
         setError('Error fetching TIL');
       }
     };
