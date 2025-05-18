@@ -1,4 +1,3 @@
-import { supabase } from "../../../../lib/supabase";
 import CommentSection from "../../../components/CommentSection";
 
 export default async function TilPage({
