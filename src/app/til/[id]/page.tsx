@@ -1,10 +1,19 @@
+import type { Metadata } from "next";
 import CommentSection from "../../../components/CommentSection";
 
-export default async function TilPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+type PageProps = {
+  params: {
+    id: string;
+  };
+};
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  return {
+    title: `TIL: ${params.id}`,
+  };
+}
+
+export default async function TilPage({ params }: PageProps) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/get-til-by-id?id=${params.id}`,
     { cache: "no-store" }
