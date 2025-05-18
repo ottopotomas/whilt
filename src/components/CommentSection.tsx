@@ -16,18 +16,22 @@ function CommentSection({ tilId }: { tilId: string }) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    async function fetchComments() {
-      const { data, error } = await supabase
-        .from("comments")
-        .select("*")
-        .eq("til_id", tilId)
-        .order("created_at", { ascending: true });
+  async function fetchComments() {
+    const { data, error } = await supabase
+      .from("comments")
+      .select("*")
+      .eq("til_id", tilId)
+      .order("created_at", { ascending: true });
 
-      if (!error) setComments(data || []);
-    }
+    console.log("🔁 Fetching comments for:", tilId);
+    console.log("🧠 Data:", data);
+    console.log("❗ Error:", error);
 
-    fetchComments();
-  }, [tilId]);
+    if (!error) setComments(data || []);
+  }
+
+  fetchComments();
+}, [tilId]);
 
   async function postComment() {
     if (!newComment.trim()) return;
