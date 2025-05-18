@@ -16,17 +16,22 @@ function CommentSection({ tilId }: { tilId: string }) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    async function fetchComments() {
-      console.log("🧠 Fetching comments for:", tilId);
+    if (!tilId) {
+      console.warn("⛔ tilId is missing or undefined.");
+      return;
+    }
 
+    console.log("📌 tilId received in CommentSection:", tilId);
+
+    async function fetchComments() {
       const { data: fetchedData, error: fetchError } = await supabase
         .from("comments")
         .select("*")
         .eq("til_id", tilId)
         .order("created_at", { ascending: true });
 
-      console.log("💬 Filtered comments from DB:", fetchedData);
-      console.log("❗ Error:", fetchError);
+      console.log("💬 Comments fetched from Supabase:", fetchedData);
+      console.log("❗ Fetch error (if any):", fetchError);
 
       if (!fetchError) {
         setComments(fetchedData || []);
