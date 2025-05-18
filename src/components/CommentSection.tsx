@@ -15,22 +15,22 @@ function CommentSection({ tilId }: { tilId: string }) {
   const [newComment, setNewComment] = useState("");
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    async function fetchComments() {
-      console.log("🧠 Fetching comments for:", tilId);
-      const { data, error } = await supabase
-        .from("comments")
-        .select("*")
-        .eq("til_id", tilId)
-        .order("created_at", { ascending: true });
+  async function fetchComments() {
+  console.log("🧠 Fetching comments for:", tilId);
 
-      console.log("💬 Data:", data);
-      console.log("❗ Error:", error);
-      setComments(data || []);
-    }
+  const { data: allComments, error: fetchError } = await supabase
+    .from("comments")
+    .select("*")
+    .order("created_at", { ascending: true });
 
-    fetchComments();
-  }, [tilId]);
+  console.log("🗃️ All comments in DB:", allComments);
+
+  const filtered = allComments?.filter((c) => c.til_id === tilId);
+
+  console.log("💬 Filtered comments for TIL ID:", filtered);
+
+  if (!fetchError) setComments(filtered || []);
+}
 
   async function postComment() {
     if (!newComment.trim()) return;
