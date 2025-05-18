@@ -10,31 +10,35 @@ interface Comment {
   user_id: string | null;
 }
 
-function CommentSection({ tilId }: { tilId: string }) {
+interface CommentSectionProps {
+  tilId: string;
+}
+
+export default function CommentSection({ tilId }: CommentSectionProps) {
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!tilId) {
-      console.warn("⛔ tilId is missing or undefined.");
+      console.warn("⛔ Missing tilId in CommentSection.");
       return;
     }
 
-    console.log("📌 tilId received in CommentSection:", tilId);
+    console.log("📌 Loaded CommentSection for tilId:", tilId);
 
     async function fetchComments() {
-      const { data: fetchedData, error: fetchError } = await supabase
+      const { data, error } = await supabase
         .from("comments")
         .select("*")
         .eq("til_id", tilId)
         .order("created_at", { ascending: true });
 
-      console.log("💬 Comments fetched from Supabase:", fetchedData);
-      console.log("❗ Fetch error (if any):", fetchError);
-
-      if (!fetchError) {
-        setComments(fetchedData || []);
+      if (error) {
+        console.error("❗ Error fetching comments:", error);
+      } else {
+        console.log("💬 Comments fetched:", data);
+        setComments(data || []);
       }
     }
 
@@ -50,28 +54,26 @@ function CommentSection({ tilId }: { tilId: string }) {
       content: newComment,
     };
 
-    console.log("🧠 Posting comment:", newEntry);
+    console.log("🧠 Posting new comment:", newEntry);
 
-    const { error: insertError } = await supabase
-      .from("comments")
-      .insert([newEntry]);
+    const { error } = await supabase.from("comments").insert([newEntry]);
 
-    if (insertError) {
-      console.error("🚫 Insert error:", insertError);
+    if (error) {
+      console.error("🚫 Failed to post comment:", error);
     } else {
       setNewComment("");
 
-      const { data: refetched, error: refetchError } = await supabase
+      const { data, error: refetchError } = await supabase
         .from("comments")
         .select("*")
         .eq("til_id", tilId)
         .order("created_at", { ascending: true });
 
-      console.log("🔄 Refetched comments:", refetched);
-      console.log("❗ Refetch error:", refetchError);
-
-      if (!refetchError) {
-        setComments(refetched || []);
+      if (refetchError) {
+        console.error("❗ Error refetching comments:", refetchError);
+      } else {
+        console.log("🔄 Comments refreshed:", data);
+        setComments(data || []);
       }
     }
 
@@ -81,19 +83,20 @@ function CommentSection({ tilId }: { tilId: string }) {
   return (
     <div className="mt-4">
       <h4 className="font-semibold mb-2">Comments</h4>
-      {comments.length === 0 && (
+      {comments.length === 0 ? (
         <p className="text-sm text-gray-500">No comments yet.</p>
+      ) : (
+        <ul className="space-y-2">
+          {comments.map((comment) => (
+            <li key={comment.id} className="border p-2 rounded bg-gray-50">
+              <p className="text-sm">{comment.content}</p>
+              <span className="text-xs text-gray-400">
+                {new Date(comment.created_at).toLocaleString()}
+              </span>
+            </li>
+          ))}
+        </ul>
       )}
-      <ul className="space-y-2">
-        {comments.map((comment) => (
-          <li key={comment.id} className="border p-2 rounded bg-gray-50">
-            <p className="text-sm">{comment.content}</p>
-            <span className="text-xs text-gray-400">
-              {new Date(comment.created_at).toLocaleString()}
-            </span>
-          </li>
-        ))}
-      </ul>
 
       <div className="mt-4 flex gap-2">
         <input
@@ -114,5 +117,3 @@ function CommentSection({ tilId }: { tilId: string }) {
     </div>
   );
 }
-
-export default CommentSection;
