@@ -104,4 +104,3 @@ function CommentSection({ tilId }: { tilId: string }) {
 }
 
 export default CommentSection;
-console.log("🔍 All TIL IDs from DB:")
