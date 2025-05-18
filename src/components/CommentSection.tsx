@@ -7,7 +7,7 @@ interface Comment {
   id: string;
   content: string;
   created_at: string;
-  user_id: string;
+  user_id: string | null;
 }
 
 function CommentSection({ tilId }: { tilId: string }) {
@@ -36,26 +36,22 @@ function CommentSection({ tilId }: { tilId: string }) {
     if (!newComment.trim()) return;
     setLoading(true);
 
-    const { data: userData } = await supabase.auth.getUser();
-    const userId = userData.user?.id;
-
-   const { error: insertError } = await supabase.from("comments").insert([
-  {
-    til_id: tilId,
-    content: newComment,
-  },
-]);
-
-    console.log("🧠 Posting comment:", {
+    const newEntry = {
       til_id: tilId,
       content: newComment,
-      user_id: userId,
-    });
+    };
+
+    console.log("🧠 Posting comment:", newEntry);
+
+    const { error: insertError } = await supabase
+      .from("comments")
+      .insert([newEntry]);
 
     if (insertError) {
       console.error("🚫 Insert error:", insertError);
     } else {
       setNewComment("");
+
       const { data, error: fetchError } = await supabase
         .from("comments")
         .select("*")
