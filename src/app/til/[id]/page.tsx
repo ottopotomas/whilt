@@ -1,6 +1,7 @@
 import CommentSection from "../../../components/CommentSection";
 
-export default function TilPage({ params }: { params: { id: string } }) {
+// this is the proper App Router pattern for a route segment like [id]
+export default function Page({ params }: { params: { id: string } }) {
   const { id } = params;
 
   return (
