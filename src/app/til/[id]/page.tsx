@@ -2,15 +2,12 @@
 import { useRouter } from "next/router";
 import CommentSection from "../../../components/CommentSection";
 
-export default function TilPage() {
-  const router = useRouter();
-  const { id } = router.query;
-
-  if (!id || typeof id !== "string") return null; // 👈 Or show loading state
+export default function TilPage({ params }: { params: { id: string } }) {
+  const { id } = params;
 
   return (
     <div>
-      {/* Other TIL content */}
+      {/* TIL content here */}
       <CommentSection tilId={id} />
     </div>
   );
