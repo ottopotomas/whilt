@@ -1,26 +1,29 @@
-import { NextResponse } from "next/server";
-import { supabase } from "../../../../lib/supabase";
+// src/app/api/get-til-by-id/route.ts
+
+import { supabase } from '../../../../lib/supabase';
+import { NextResponse } from 'next/server';
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
-  const id = searchParams.get("id");
-
-  if (!id) {
-    return NextResponse.json({ error: "Missing ID" }, { status: 400 });
-  }
-
-  const { data, error } = await supabase
-    .from("tils")
-    .select("*")
-    .eq("id", id)
-    .single();
+  const id = searchParams.get('id');
 
   console.log("🧠 API DEBUG - TIL ID:", id);
-console.log("Raw Response:", { data, error });
 
-  if (error || !data) {
-    return NextResponse.json({ error: error?.message || "Not found" }, { status: 404 });
-  }
+  // 👇 NEW: Fetch all IDs first
+  const { data: allTils } = await supabase
+    .from('tils')
+    .select('id');
 
-  return NextResponse.json(data);
+  console.log("🧠 DEBUG - All TIL IDs in DB:", allTils?.map((t) => t.id));
+
+  // Then try to fetch the one matching ID
+  const { data, error } = await supabase
+    .from('tils')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  console.log("🧠 DEBUG - TIL result:", { data, error });
+
+  return NextResponse.json({ data, error });
 }
