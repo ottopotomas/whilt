@@ -17,26 +17,24 @@ function CommentSection({ tilId }: { tilId: string }) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    async function fetchComments() {
-      console.log("🧠 Fetching comments for:", tilId);
+  async function fetchComments() {
+    console.log("🧠 Fetching comments for:", tilId);
 
-      const { data: allComments, error } = await supabase
-        .from("comments")
-        .select("*")
-        .order("created_at", { ascending: true });
+    const { data, error } = await supabase
+      .from("comments")
+      .select("*")
+      .eq("til_id", tilId)
+      .order("created_at", { ascending: true });
 
-      console.log("🗃️ All comments in DB:", allComments);
-      console.log("❗ Error:", error);
+    console.log("💬 Filtered comments from DB:", data);
+    console.log("❗ Error:", error);
 
-      const filtered = allComments?.filter((c) => c.til_id === tilId);
+    if (!error) setComments(data || []);
+  }
 
-      console.log("💬 Filtered comments for TIL ID:", filtered);
+  fetchComments();
+}, [tilId]);
 
-      if (!error) setComments(filtered || []);
-    }
-
-    fetchComments();
-  }, [tilId]);
 
   async function postComment() {
     if (!newComment.trim()) return;
@@ -49,27 +47,27 @@ function CommentSection({ tilId }: { tilId: string }) {
 
     console.log("🧠 Posting comment:", newEntry);
 
-    const { error: insertError } = await supabase.from("comments").insert([newEntry]);
+    const { error: insertError } = await supabase
+  .from("comments")
+  .insert([{ til_id: tilId, content: newComment }]);
 
-    if (insertError) {
-      console.error("🚫 Insert error:", insertError);
-    } else {
-      setNewComment("");
+if (insertError) {
+  console.error("🚫 Insert error:", insertError);
+} else {
+  setNewComment("");
 
-      const { data: allComments, error: fetchError } = await supabase
-        .from("comments")
-        .select("*")
-        .order("created_at", { ascending: true });
+  const { data, error: fetchError } = await supabase
+    .from("comments")
+    .select("*")
+    .eq("til_id", tilId)
+    .order("created_at", { ascending: true });
 
-      console.log("🔄 Refetched all comments:", allComments);
-      console.log("❗ Refetch error:", fetchError);
+  console.log("🔄 Refetched filtered comments:", data);
+  console.log("❗ Refetch error:", fetchError);
 
-      const filtered = allComments?.filter((c) => c.til_id === tilId);
+  if (!fetchError) setComments(data || []);
+}
 
-      console.log("💬 Filtered comments after post:", filtered);
-
-      if (!fetchError) setComments(filtered || []);
-    }
 
     setLoading(false);
   }
