@@ -1,32 +1,20 @@
 import { supabase } from "../../../../lib/supabase";
 import CommentSection from "../../../components/CommentSection";
 
-type Props = {
-  params: {
-    id: string;
-  };
-};
+export default async function TilPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/get-til-by-id?id=${params.id}`,
+    { cache: "no-store" }
+  );
 
-export default async function TilPage({ params }: Props) {
-  const { id } = params;
+  const til = await res.json();
 
-  const { data: til, error } = await supabase
-    .from("tils")
-    .select("*")
-    .eq("id", id)
-    .single();
-
-  // ✅ Debug logs to show up in Vercel logs
-  console.log("🧠 DEBUG Supabase result for ID:", id);
-  console.log("Data:", til);
-  console.log("Error:", error);
-
-  if (error || !til) {
-    return (
-      <div className="p-6 text-red-600">
-        Error loading TIL: {error?.message || "Not found"}
-      </div>
-    );
+  if (!res.ok || !til) {
+    return <div className="p-6 text-red-600">Error loading TIL</div>;
   }
 
   return (
