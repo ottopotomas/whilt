@@ -1,5 +1,10 @@
 import CommentSection from "../../../components/CommentSection";
 
+// ✅ Add generateStaticParams — avoids weird TS inference bugs
+export function generateStaticParams() {
+  return []; // placeholder — we're using dynamic rendering
+}
+
 export default function Page({
   params,
 }: {
