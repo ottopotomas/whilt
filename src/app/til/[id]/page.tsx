@@ -30,6 +30,10 @@ const [til, setTil] = useState<Til | null>(null);
         .eq("id", id)
         .single();
 
+console.log("DEBUG: Supabase result for TIL ID", id);
+console.log("Data:", til);
+console.log("Error:", error);
+
       if (error) {
         setError("Error loading TIL");
       } else {
