@@ -17,15 +17,16 @@ function CommentSection({ tilId }: { tilId: string }) {
 
   useEffect(() => {
   async function fetchComments() {
+    console.log("🔁 Fetching comments for:", tilId); // ✅ Add this
+
     const { data, error } = await supabase
       .from("comments")
       .select("*")
       .eq("til_id", tilId)
       .order("created_at", { ascending: true });
 
-    console.log("🔁 Fetching comments for:", tilId);
-    console.log("🧠 Data:", data);
-    console.log("❗ Error:", error);
+    console.log("🧠 Data:", data);     // ✅ Add this
+    console.log("❗ Error:", error);   // ✅ Add this
 
     if (!error) setComments(data || []);
   }
