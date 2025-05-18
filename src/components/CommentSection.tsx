@@ -16,37 +16,46 @@ function CommentSection({ tilId }: { tilId: string }) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-  async function fetchComments() {
-    console.log("🔁 Fetching comments for:", tilId); // ✅ Add this
+    async function fetchComments() {
+      console.log("🧠 Fetching comments for:", tilId);
+      const { data, error } = await supabase
+        .from("comments")
+        .select("*")
+        .eq("til_id", tilId)
+        .order("created_at", { ascending: true });
 
-    const { data, error } = await supabase
-      .from("comments")
-      .select("*")
-      .eq("til_id", tilId)
-      .order("created_at", { ascending: true });
+      console.log("💬 Data:", data);
+      console.log("❗ Error:", error);
+      setComments(data || []);
+    }
 
-    console.log("🧠 Data:", data);     // ✅ Add this
-    console.log("❗ Error:", error);   // ✅ Add this
-
-    if (!error) setComments(data || []);
-  }
-
-  fetchComments();
-}, [tilId]);
+    fetchComments();
+  }, [tilId]);
 
   async function postComment() {
     if (!newComment.trim()) return;
     setLoading(true);
 
-    const { error } = await supabase.from("comments").insert([
+    const { data: userData } = await supabase.auth.getUser();
+    const userId = userData.user?.id;
+
+    const { error: insertError } = await supabase.from("comments").insert([
       {
         til_id: tilId,
         content: newComment,
-        user_id: (await supabase.auth.getUser()).data.user?.id,
+        user_id: userId,
       },
     ]);
 
-    if (!error) {
+    console.log("🧠 Posting comment:", {
+      til_id: tilId,
+      content: newComment,
+      user_id: userId,
+    });
+
+    if (insertError) {
+      console.error("🚫 Insert error:", insertError);
+    } else {
       setNewComment("");
       const { data, error: fetchError } = await supabase
         .from("comments")
@@ -54,6 +63,8 @@ function CommentSection({ tilId }: { tilId: string }) {
         .eq("til_id", tilId)
         .order("created_at", { ascending: true });
 
+      console.log("🔄 Refetched comments:", data);
+      console.log("❗ Refetch error:", fetchError);
       if (!fetchError) setComments(data || []);
     }
 
