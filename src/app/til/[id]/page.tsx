@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import CommentSection from "../../../components/CommentSection";
 
-export default async function TilPage({ params }: any) { 
+export default async function TilPage({ params }: any) {
   // 🔥 Forced rebuild attempt: removing type issues
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/get-til-by-id?id=${params.id}`,
