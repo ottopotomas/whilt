@@ -1,53 +1,33 @@
-'use client';
-
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
 import { supabase } from "../../../../lib/supabase";
 import CommentSection from "../../../components/CommentSection";
 
-export default function TilPage() {
-  const params = useParams();
-  const id = params?.id as string;
-
-  type Til = {
-  id: string;
-  question: string;
-  answer: string;
-  category: string;
+type Props = {
+  params: {
+    id: string;
+  };
 };
 
-const [til, setTil] = useState<Til | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+export default async function TilPage({ params }: Props) {
+  const { id } = params;
 
-  useEffect(() => {
-    if (!id) return;
+  const { data: til, error } = await supabase
+    .from("tils")
+    .select("*")
+    .eq("id", id)
+    .single();
 
-    const fetchTIL = async () => {
-      const { data, error } = await supabase
-        .from("tils")
-        .select("*")
-        .eq("id", id)
-        .single();
+  // ✅ Debug logs to show up in Vercel logs
+  console.log("🧠 DEBUG Supabase result for ID:", id);
+  console.log("Data:", til);
+  console.log("Error:", error);
 
-console.log("DEBUG: Supabase result for TIL ID", id);
-console.log("Data:", til);
-console.log("Error:", error);
-
-      if (error) {
-        setError("Error loading TIL");
-      } else {
-        setTil(data);
-      }
-
-      setLoading(false);
-    };
-
-    fetchTIL();
-  }, [id]);
-
-  if (loading) return <div className="p-6">Loading...</div>;
-  if (error || !til) return <div className="p-6 text-red-600">{error}</div>;
+  if (error || !til) {
+    return (
+      <div className="p-6 text-red-600">
+        Error loading TIL: {error?.message || "Not found"}
+      </div>
+    );
+  }
 
   return (
     <div className="p-6">
