@@ -1,12 +1,6 @@
 import CommentSection from "../../../components/CommentSection";
 
-type Props = {
-  params: {
-    id: string;
-  };
-};
-
-export default function TilPage({ params }: Props) {
+export default function TilPage({ params }: { params: { id: string } }) {
   const { id } = params;
 
   return (
