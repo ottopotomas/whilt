@@ -43,8 +43,7 @@ function CommentSection({ tilId }: { tilId: string }) {
       {
         til_id: tilId,
         content: newComment,
-        user_id: userId,
-      },
+             },
     ]);
 
     console.log("🧠 Posting comment:", {
