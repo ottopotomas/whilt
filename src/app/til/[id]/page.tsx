@@ -1,7 +1,8 @@
-"use client"; // ⬅️ Forces Client Component, avoids TS bug
+"use client";
 
 import CommentSection from "../../../components/CommentSection";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function Page(props: any) {
   const tilId = props?.params?.id;
 
