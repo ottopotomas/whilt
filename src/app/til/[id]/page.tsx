@@ -9,6 +9,7 @@ export default async function TilPage({ params }: any) {
   );
 
   const til = await res.json();
+  console.log("🔍 TIL Object:", til);
 
   if (!res.ok || !til) {
     return <div className="p-6 text-red-600">Error loading TIL</div>;
