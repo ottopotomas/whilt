@@ -16,8 +16,7 @@ export async function GET(req: Request) {
     .single();
 
   console.log("🧠 API DEBUG - TIL ID:", id);
-  console.log("Data:", data);
-  console.log("Error:", error);
+console.log("Raw Response:", { data, error });
 
   if (error || !data) {
     return NextResponse.json({ error: error?.message || "Not found" }, { status: 404 });
