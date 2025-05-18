@@ -1,12 +1,13 @@
 import CommentSection from "../../../components/CommentSection";
 
-// this is the proper App Router pattern for a route segment like [id]
-export default function Page({ params }: { params: { id: string } }) {
-  const { id } = params;
-
+export default function Page({
+  params,
+}: {
+  params: { id: string };
+}) {
   return (
     <div className="p-4">
-      <CommentSection tilId={id} />
+      <CommentSection tilId={params.id} />
     </div>
   );
 }
