@@ -8,6 +8,7 @@ interface Comment {
   content: string;
   created_at: string;
   user_id: string | null;
+  til_id: string;
 }
 
 function CommentSection({ tilId }: { tilId: string }) {
@@ -16,26 +17,26 @@ function CommentSection({ tilId }: { tilId: string }) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-  async function fetchComments() {
-    console.log("🧠 Fetching comments for:", tilId);
+    async function fetchComments() {
+      console.log("🧠 Fetching comments for:", tilId);
 
-    const { data: allComments, error: fetchError } = await supabase
-      .from("comments")
-      .select("*")
-      .order("created_at", { ascending: true });
+      const { data: allComments, error } = await supabase
+        .from("comments")
+        .select("*")
+        .order("created_at", { ascending: true });
 
-    console.log("🗃️ All comments in DB:", allComments);
+      console.log("🗃️ All comments in DB:", allComments);
+      console.log("❗ Error:", error);
 
-    const filtered = allComments?.filter((c) => c.til_id === tilId);
+      const filtered = allComments?.filter((c) => c.til_id === tilId);
 
-    console.log("💬 Filtered comments for TIL ID:", filtered);
+      console.log("💬 Filtered comments for TIL ID:", filtered);
 
-    if (!fetchError) setComments(filtered || []);
-  }
+      if (!error) setComments(filtered || []);
+    }
 
-  fetchComments();
-}, [tilId]);
-
+    fetchComments();
+  }, [tilId]);
 
   async function postComment() {
     if (!newComment.trim()) return;
@@ -48,24 +49,26 @@ function CommentSection({ tilId }: { tilId: string }) {
 
     console.log("🧠 Posting comment:", newEntry);
 
-    const { error: insertError } = await supabase
-      .from("comments")
-      .insert([newEntry]);
+    const { error: insertError } = await supabase.from("comments").insert([newEntry]);
 
     if (insertError) {
       console.error("🚫 Insert error:", insertError);
     } else {
       setNewComment("");
 
-      const { data, error: fetchError } = await supabase
+      const { data: allComments, error: fetchError } = await supabase
         .from("comments")
         .select("*")
-        .eq("til_id", tilId)
         .order("created_at", { ascending: true });
 
-      console.log("🔄 Refetched comments:", data);
+      console.log("🔄 Refetched all comments:", allComments);
       console.log("❗ Refetch error:", fetchError);
-      if (!fetchError) setComments(data || []);
+
+      const filtered = allComments?.filter((c) => c.til_id === tilId);
+
+      console.log("💬 Filtered comments after post:", filtered);
+
+      if (!fetchError) setComments(filtered || []);
     }
 
     setLoading(false);
