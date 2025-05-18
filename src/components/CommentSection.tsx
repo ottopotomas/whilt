@@ -39,12 +39,12 @@ function CommentSection({ tilId }: { tilId: string }) {
     const { data: userData } = await supabase.auth.getUser();
     const userId = userData.user?.id;
 
-    const { error: insertError } = await supabase.from("comments").insert([
-      {
-        til_id: tilId,
-        content: newComment,
-             },
-    ]);
+   const { error: insertError } = await supabase.from("comments").insert([
+  {
+    til_id: tilId,
+    content: newComment,
+  },
+]);
 
     console.log("🧠 Posting comment:", {
       til_id: tilId,
