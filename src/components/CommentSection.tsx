@@ -15,53 +15,58 @@ function CommentSection({ tilId }: { tilId: string }) {
   const [newComment, setNewComment] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Fetch comments on load
   useEffect(() => {
     async function fetchComments() {
-      const { data, error } = await supabase
+      console.log("🧠 Fetching comments for:", tilId);
+
+      const { data: fetchedData, error: fetchError } = await supabase
         .from("comments")
         .select("*")
         .eq("til_id", tilId)
         .order("created_at", { ascending: true });
 
-      if (error) {
-        console.error("❗ Error fetching comments:", error);
-      } else {
-        setComments(data || []);
+      console.log("💬 Filtered comments from DB:", fetchedData);
+      console.log("❗ Error:", fetchError);
+
+      if (!fetchError) {
+        setComments(fetchedData || []);
       }
     }
 
     fetchComments();
   }, [tilId]);
 
-  // Post new comment
   async function postComment() {
     if (!newComment.trim()) return;
     setLoading(true);
 
-    const { error } = await supabase.from("comments").insert([
-      {
-        til_id: tilId,
-        content: newComment,
-      },
-    ]);
+    const newEntry = {
+      til_id: tilId,
+      content: newComment,
+    };
 
-    if (error) {
-      console.error("❗ Error posting comment:", error);
+    console.log("🧠 Posting comment:", newEntry);
+
+    const { error: insertError } = await supabase
+      .from("comments")
+      .insert([newEntry]);
+
+    if (insertError) {
+      console.error("🚫 Insert error:", insertError);
     } else {
       setNewComment("");
 
-      // Refetch comments after posting
-      const { data, error: refetchError } = await supabase
+      const { data: refetched, error: refetchError } = await supabase
         .from("comments")
         .select("*")
         .eq("til_id", tilId)
         .order("created_at", { ascending: true });
 
-      if (refetchError) {
-        console.error("❗ Error refetching comments:", refetchError);
-      } else {
-        setComments(data || []);
+      console.log("🔄 Refetched comments:", refetched);
+      console.log("❗ Refetch error:", refetchError);
+
+      if (!refetchError) {
+        setComments(refetched || []);
       }
     }
 
@@ -69,22 +74,21 @@ function CommentSection({ tilId }: { tilId: string }) {
   }
 
   return (
-    <div className="mt-6">
+    <div className="mt-4">
       <h4 className="font-semibold mb-2">Comments</h4>
-      {comments.length === 0 ? (
+      {comments.length === 0 && (
         <p className="text-sm text-gray-500">No comments yet.</p>
-      ) : (
-        <ul className="space-y-2">
-          {comments.map((comment) => (
-            <li key={comment.id} className="border p-2 rounded bg-gray-50">
-              <p className="text-sm">{comment.content}</p>
-              <span className="text-xs text-gray-400">
-                {new Date(comment.created_at).toLocaleString()}
-              </span>
-            </li>
-          ))}
-        </ul>
       )}
+      <ul className="space-y-2">
+        {comments.map((comment) => (
+          <li key={comment.id} className="border p-2 rounded bg-gray-50">
+            <p className="text-sm">{comment.content}</p>
+            <span className="text-xs text-gray-400">
+              {new Date(comment.created_at).toLocaleString()}
+            </span>
+          </li>
+        ))}
+      </ul>
 
       <div className="mt-4 flex gap-2">
         <input
