@@ -1,53 +1,55 @@
-'use client'; // Add this line to mark the file as a Client Component
+'use client';
 
-import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation'; // Use useSearchParams instead of useRouter
-import { supabase } from '../../../../lib/supabase'; // Adjust path if necessary
-import CommentSection from '../../../components/CommentSection'; // Adjust path if necessary
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import { supabase } from "../../../../lib/supabase";
+import CommentSection from "../../../components/CommentSection";
 
-interface TIL {
+export default function TilPage() {
+  const params = useParams();
+  const id = params?.id as string;
+
+  type Til = {
   id: string;
   question: string;
   answer: string;
   category: string;
-}
+};
 
-export default function TilPage() {
-  const [til, setTil] = useState<TIL | null>(null); // Add type for til state
-  const [error, setError] = useState<string | null>(null); // Allow for error string
-  const searchParams = useSearchParams();
-  const id = searchParams.get('id'); // Get the dynamic ID from search params
+const [til, setTil] = useState<Til | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!id) return;
 
     const fetchTIL = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('tils')
-          .select('*')
-          .eq('id', id);
+      const { data, error } = await supabase
+        .from("tils")
+        .select("*")
+        .eq("id", id)
+        .single();
 
-        if (error) throw error;
-        setTil(data ? data[0] : null); // Handle data properly
-      } catch {
-        setError('Error fetching TIL');
+      if (error) {
+        setError("Error loading TIL");
+      } else {
+        setTil(data);
       }
+
+      setLoading(false);
     };
 
     fetchTIL();
   }, [id]);
 
-  if (error) return <p>{error}</p>;
-
-  if (!til) return <p>Loading...</p>;
+  if (loading) return <div className="p-6">Loading...</div>;
+  if (error || !til) return <div className="p-6 text-red-600">{error}</div>;
 
   return (
     <div className="p-6">
       <h1 className="text-xl font-bold">{til.question}</h1>
       <p className="mt-2 text-gray-700">{til.answer}</p>
       <p className="mt-1 text-sm text-gray-500">Category: {til.category}</p>
-
       <CommentSection tilId={til.id} />
     </div>
   );

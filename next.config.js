@@ -2,9 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   experimental: {
-    appDir: true,
+    // remove anything not needed here
   },
-}
+};
 
-module.exports = nextConfig
-
+module.exports = nextConfig;
