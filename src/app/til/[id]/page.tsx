@@ -1,12 +1,6 @@
 import CommentSection from "../../../components/CommentSection";
 
-export async function generateMetadata({ params }: { params: Record<string, string> }) {
-  return {
-    title: `TIL: ${params.id}`,
-  };
-}
-
-export default async function TilPage({ params }: { params: Record<string, string> }) {
+export default async function TilPage({ params }: any) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/get-til-by-id?id=${params.id}`,
     { cache: "no-store" }
