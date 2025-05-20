@@ -106,49 +106,71 @@ export default function ProfilePage() {
   <h2 className="text-lg font-semibold mb-2">Achievements</h2>
   <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
     {[
-      {
-        label: '🔥 3-Day Streak',
-        unlocked: streak >= 3,
-        description: 'Keep it up for a full week!',
-      },
-      {
-        label: '📚 7-Day Streak',
-        unlocked: streak >= 7,
-        description: 'One week of daily learning!',
-      },
-      {
-        label: '🧘 28-Day Streak',
-        unlocked: streak >= 28,
-        description: 'A full month of memory gains.',
-      },
-      {
-        label: '🤔 10 TILs Logged',
-        unlocked: tilCount >= 10,
-        description: 'You’re just getting started.',
-      },
-      {
-        label: '🧠 50 TILs Logged',
-        unlocked: tilCount >= 50,
-        description: 'You’re building a real knowledge bank.',
-      },
-      {
-        label: '🏆 100 TILs Logged',
-        unlocked: tilCount >= 100,
-        description: 'You are a memory master.',
-      },
-    ].map((badge, index) => (
-      <div
-        key={index}
-        className={`p-3 rounded border text-sm ${
-          badge.unlocked
-            ? 'border-green-500 bg-green-50 text-green-800'
-            : 'border-gray-300 bg-gray-100 text-gray-400'
-        }`}
-      >
-        <p className="font-semibold">{badge.label}</p>
-        <p>{badge.description}</p>
-      </div>
-    ))}
+  {
+    label: '🔥 3-Day Streak',
+    unlocked: streak >= 3,
+    description: 'Keep it up for a full week!',
+  },
+  {
+    label: '📚 7-Day Streak',
+    unlocked: streak >= 7,
+    description: 'One week of daily learning!',
+  },
+  {
+    label: '🧘 28-Day Streak',
+    unlocked: streak >= 28,
+    description: 'A full month of memory gains.',
+  },
+  {
+    label: '🤔 10 TILs Logged',
+    unlocked: tilCount >= 10,
+    description: 'You’re just getting started.',
+  },
+  {
+    label: '🧠 50 TILs Logged',
+    unlocked: tilCount >= 50,
+    description: 'You’re building a real knowledge bank.',
+  },
+  {
+    label: '🏆 100 TILs Logged',
+    unlocked: tilCount >= 100,
+    description: 'You are a memory master.',
+  },
+  // PREMIUM EXTRAS
+  {
+    label: '🧪 Premium Pack Unlocked',
+    unlocked: isPremium,
+    premium: true,
+    description: 'Access exclusive TIL packs.',
+  },
+  {
+    label: '🎁 Monthly Capy Reward',
+    unlocked: isPremium,
+    premium: true,
+    description: 'Earn rare learning items!',
+  },
+].map((badge, index) => (
+  <div
+    key={index}
+    className={`p-3 rounded border text-sm relative ${
+      badge.unlocked
+        ? 'border-green-500 bg-green-50 text-green-800'
+        : badge.premium
+        ? 'border-yellow-400 bg-yellow-50 text-yellow-500 opacity-60'
+        : 'border-gray-300 bg-gray-100 text-gray-400'
+    }`}
+  >
+    <p className="font-semibold">
+      {badge.unlocked ? badge.label : `🔒 ${badge.label}`}
+    </p>
+    <p>{badge.description}</p>
+    {badge.premium && !isPremium && (
+      <p className="absolute top-1 right-2 text-xs italic text-yellow-500">
+        Premium only
+      </p>
+    )}
+  </div>
+))}
   </div>
 </div>
 
