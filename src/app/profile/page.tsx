@@ -75,29 +75,34 @@ export default function ProfilePage() {
   if (loading) return <p className="p-4">Loading your profile...</p>;
 
   return (
-    <div className="p-6 max-w-2xl mx-auto space-y-6">
-      <h1 className="text-2xl font-bold">👤 Your Profile</h1>
+  <div className="p-6 max-w-2xl mx-auto space-y-6">
+    <h1 className="text-2xl font-bold">👤 Your Profile</h1>
 
-      <div className="bg-white p-4 rounded shadow space-y-2">
-        <p><strong>TILs logged:</strong> {tilCount}</p>
-        <p><strong>🔥 Streak:</strong> {streak} day{streak !== 1 && 's'}</p>
+    <div className="bg-white p-4 rounded shadow space-y-2">
+      <p><strong>TILs logged:</strong> {tilCount}</p>
+      <p><strong>🔥 Streak:</strong> {streak} day{streak !== 1 && 's'}</p>
+      <p>
+        <strong>Premium:</strong>{' '}
+        {isPremium ? '✅ Active' : '❌ Inactive'}
+      </p>
+      {tils.length > 0 && (
+        <p className="text-sm text-gray-500">
+          Last learned: {new Date(tils[0].created_at).toLocaleDateString()}
+        </p>
+      )}
+    </div>
+
+    <div className="bg-white p-4 rounded shadow">
+      <h2 className="text-lg font-semibold">Your Avatar</h2>
+      <div className="mt-2">
         <p>
-          <strong>Premium:</strong>{' '}
-          {isPremium ? '✅ Active' : '❌ Inactive'}
+          {tilCount < 10 && '🎓 Beginner Learner'}
+          {tilCount >= 10 && tilCount < 50 && '🧢 Learning Enthusiast'}
+          {tilCount >= 50 && tilCount < 100 && '👓 Knowledge Builder'}
+          {tilCount >= 100 && '🧠 WHILT Master'}
         </p>
       </div>
-
-      <div className="bg-white p-4 rounded shadow">
-        <h2 className="text-lg font-semibold">Your Avatar</h2>
-        <div className="mt-2">
-          <p>
-            {tilCount < 10 && '🎓 Beginner Learner'}
-            {tilCount >= 10 && tilCount < 50 && '🧢 Learning Enthusiast'}
-            {tilCount >= 50 && tilCount < 100 && '👓 Knowledge Builder'}
-            {tilCount >= 100 && '🧠 WHILT Master'}
-          </p>
-        </div>
-      </div>
     </div>
-  );
-}
+  </div>
+);      
+} // end of ProfilePage component
