@@ -201,7 +201,7 @@ export default function ProfilePage() {
 
   {isPremium ? (
     <div className="border p-4 rounded bg-green-50 text-green-900 space-y-1">
-      <p className="text-xl">🎁 This Month's Reward:</p>
+      <p className="text-xl">🎁 This Month&rsquo;s Reward:</p>
       <p className="text-2xl font-semibold">🧤 Botanist’s Gauntlets</p>
       <p className="text-sm text-green-800">Unlocked through your learning streak!</p>
     </div>
