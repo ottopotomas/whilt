@@ -102,6 +102,56 @@ export default function ProfilePage() {
         </p>
       </div>
     </div>
+    <div className="bg-white p-4 rounded shadow">
+  <h2 className="text-lg font-semibold mb-2">Achievements</h2>
+  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+    {[
+      {
+        label: '🔥 3-Day Streak',
+        unlocked: streak >= 3,
+        description: 'Keep it up for a full week!',
+      },
+      {
+        label: '📚 7-Day Streak',
+        unlocked: streak >= 7,
+        description: 'One week of daily learning!',
+      },
+      {
+        label: '🧘 28-Day Streak',
+        unlocked: streak >= 28,
+        description: 'A full month of memory gains.',
+      },
+      {
+        label: '🤔 10 TILs Logged',
+        unlocked: tilCount >= 10,
+        description: 'You’re just getting started.',
+      },
+      {
+        label: '🧠 50 TILs Logged',
+        unlocked: tilCount >= 50,
+        description: 'You’re building a real knowledge bank.',
+      },
+      {
+        label: '🏆 100 TILs Logged',
+        unlocked: tilCount >= 100,
+        description: 'You are a memory master.',
+      },
+    ].map((badge, index) => (
+      <div
+        key={index}
+        className={`p-3 rounded border text-sm ${
+          badge.unlocked
+            ? 'border-green-500 bg-green-50 text-green-800'
+            : 'border-gray-300 bg-gray-100 text-gray-400'
+        }`}
+      >
+        <p className="font-semibold">{badge.label}</p>
+        <p>{badge.description}</p>
+      </div>
+    ))}
+  </div>
+</div>
+
   </div>
 );      
 } // end of ProfilePage component
