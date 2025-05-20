@@ -1,4 +1,5 @@
 // src/app/layout.tsx
+import './globals.css';
 import type { ReactNode } from "react";
 import { Toaster } from "react-hot-toast";
 import "./globals.css"; // if using Tailwind/global styles
