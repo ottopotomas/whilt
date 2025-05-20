@@ -2,7 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { fetchPublicTils } from "../../lib/fetchTils";
+import { fetchPublicTils } from "../lib/fetchTils";
 
 interface TIL {
   id: string;

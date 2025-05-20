@@ -1,104 +1,109 @@
-"use client";
-import { useState } from "react";
-import { createClient } from "@supabase/supabase-js";
+'use client';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-);
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { supabase } from '../../../lib/supabase';
+import { startOfToday } from 'date-fns';
+import toast from 'react-hot-toast';
 
-export default function TILForm() {
-  const [question, setQuestion] = useState("");
-  const [answer, setAnswer] = useState("");
-  const [category, setCategory] = useState("");
-  const [isPublic, setIsPublic] = useState(true); // default to public
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
+const TILForm = ({ userId }) => {
+  const { register, handleSubmit, reset } = useForm();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!question || !answer) return;
-
-    setLoading(true);
-
-    const { error } = await supabase.from("tils").insert([
-      {
-        question,
-        answer,
-        category,
-        is_public: isPublic,
-      },
-    ]);
-
-    setLoading(false);
+  const getTodaysManualTILCount = async () => {
+    const { data, error } = await supabase
+      .from('tils')
+      .select('id')
+      .eq('user_id', userId)
+      .eq('source', 'manual')
+      .eq('is_draft', false)
+      .gte('created_at', startOfToday().toISOString());
 
     if (error) {
-      alert("Something went wrong: " + error.message);
-    } else {
-      setSuccess(true);
-      setQuestion("");
-      setAnswer("");
-      setCategory("");
-      setIsPublic(true); // reset to public by default
+      console.error('Error counting TILs:', error.message);
+      return 0;
     }
+
+    return data?.length || 0;
+  };
+
+  const onSubmit = async (data) => {
+    setIsSubmitting(true);
+
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', userId)
+      .single();
+
+    const isPremium = profile?.is_premium;
+
+    const tilCount = await getTodaysManualTILCount();
+
+    if (tilCount === 5) {
+      toast("You've logged 5 TILs today. Great progress! Remember to reflect.");
+    }
+
+    if (tilCount === 8) {
+      toast("You're nearing your 10-TIL limit. Consider saving the rest as drafts.");
+    }
+
+    if (tilCount >= 10) {
+      toast.error("You've hit your 10-TIL limit for today.");
+      const confirmed = confirm('Would you like to save this TIL as a draft?');
+      if (confirmed) {
+        const { error: draftError } = await supabase.from('tils').insert({
+          user_id: userId,
+          content: data.content,
+          source: 'manual',
+          is_draft: true,
+        });
+
+        if (draftError) {
+          toast.error('Failed to save draft.');
+        } else {
+          toast.success('Draft saved. Come back tomorrow to publish it.');
+          reset();
+        }
+      }
+      setIsSubmitting(false);
+      return;
+    }
+
+    const { error } = await supabase.from('tils').insert({
+      user_id: userId,
+      content: data.content,
+      source: 'manual',
+      is_draft: false,
+    });
+
+    if (error) {
+      toast.error('Failed to submit TIL.');
+    } else {
+      toast.success('TIL submitted!');
+      reset();
+    }
+
+    setIsSubmitting(false);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto p-6 bg-white rounded-xl shadow-md">
-      <h2 className="text-xl font-bold mb-4">Add a New TIL</h2>
-
-      <label className="block mb-2 font-medium">Question</label>
-      <input
-        type="text"
-        value={question}
-        onChange={(e) => setQuestion(e.target.value)}
-        className="w-full mb-4 p-2 border rounded"
-        placeholder="What did you learn?"
-        required
-      />
-
-      <label className="block mb-2 font-medium">Answer</label>
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <textarea
-        value={answer}
-        onChange={(e) => setAnswer(e.target.value)}
-        className="w-full mb-4 p-2 border rounded"
-        placeholder="Write a short explanation..."
-        rows={4}
-        required
+        {...register('content', { required: true })}
+        placeholder="Today I learned..."
+        className="w-full p-2 rounded border"
+        disabled={isSubmitting}
       />
-
-      <label className="block mb-2 font-medium">Category (optional)</label>
-      <input
-        type="text"
-        value={category}
-        onChange={(e) => setCategory(e.target.value)}
-        className="w-full mb-4 p-2 border rounded"
-        placeholder="e.g. Science, Business"
-      />
-
-      <label className="flex items-center mb-4">
-        <input
-          type="checkbox"
-          checked={!isPublic}
-          onChange={() => setIsPublic(!isPublic)}
-          className="mr-2"
-        />
-        Make this TIL private
-      </label>
-
       <button
         type="submit"
+        disabled={isSubmitting}
         className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        disabled={loading}
       >
-        {loading ? "Saving..." : "Submit TIL"}
+        {isSubmitting ? 'Submitting...' : 'Submit TIL'}
       </button>
-
-      {success && (
-        <p className="mt-4 text-green-600 font-medium">
-          ✅ TIL saved successfully!
-        </p>
-      )}
     </form>
   );
-}
+};
+
+export default TILForm;
