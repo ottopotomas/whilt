@@ -19,9 +19,14 @@ export default function ProfilePage() {
       } = await supabase.auth.getUser();
 
       if (userError || !user) {
-        setLoading(false);
-        return;
-      }
+  setLoading(false);
+  setTils([]);
+  setTilCount(0);
+  setStreak(0);
+  setIsPremium(false);
+  return;
+}
+
 
       // Get TILs
       const { data: tilsData } = await supabase
@@ -72,6 +77,13 @@ export default function ProfilePage() {
   };
 
   if (loading) return <p className="p-4">Loading your profile...</p>;
+if (!tils.length && !isPremium && !loading) {
+  return (
+    <div className="p-6 max-w-2xl mx-auto">
+      <h1 className="text-xl font-bold">Please sign in to view your profile.</h1>
+    </div>
+  );
+}
 
   return (
   <div className="p-6 max-w-2xl mx-auto space-y-6">
