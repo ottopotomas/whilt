@@ -1,6 +1,7 @@
 // lib/fetchTils.ts
 import { supabase } from "../../lib/supabase";
-import type { TIL, Comment } from './types'; // ✅ correct
+// import type { TIL, Comment } from './types'; // ✅ correct
+
 
 export async function fetchPublicTils() {
   const { data, error } = await supabase
