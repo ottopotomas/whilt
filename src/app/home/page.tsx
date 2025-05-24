@@ -3,7 +3,7 @@
 
 import React, { useState } from "react";
 import { TILCard } from "../../components/TILCard";
-import FeedFilter from "../../../components/FeedFilter";
+import FeedFilter from "../../components/FeedFilter";
 import { usePublicTILs } from "../../hooks/usePublicTILs";
 import Image from "next/image";
 import Link from "next/link";
