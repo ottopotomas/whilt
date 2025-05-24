@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { supabase } from '../../../../lib/supabase';
+import { supabase } from '../../../lib/supabase';
 import { format } from 'date-fns';
 import toast from 'react-hot-toast';
 import type { Comment } from '../../../lib/types';

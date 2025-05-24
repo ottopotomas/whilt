@@ -1,13 +1,22 @@
+// src/components/TILForm.tsx
 'use client';
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { supabase } from '../../../lib/supabase';
+import { supabase } from '../lib/supabase';
 import { startOfToday } from 'date-fns';
 import toast from 'react-hot-toast';
 
-const TILForm = ({ userId }) => {
-  const { register, handleSubmit, reset } = useForm();
+type TILFormProps = {
+  userId: string;
+};
+
+type FormData = {
+  content: string;
+};
+
+export default function TILForm({ userId }: TILFormProps) {
+  const { register, handleSubmit, reset } = useForm<FormData>();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const getTodaysManualTILCount = async () => {
@@ -27,28 +36,28 @@ const TILForm = ({ userId }) => {
     return data?.length || 0;
   };
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
 
     const { data: profile, error: profileError } = await supabase
       .from('profiles')
-      .select('*')
+      .select('is_premium')
       .eq('id', userId)
       .single();
 
-    const isPremium = profile?.is_premium;
+    if (profileError) {
+      toast.error('Error fetching user profile.');
+      setIsSubmitting(false);
+      return;
+    }
 
     const tilCount = await getTodaysManualTILCount();
 
     if (tilCount === 5) {
       toast("You've logged 5 TILs today. Great progress! Remember to reflect.");
-    }
-
-    if (tilCount === 8) {
+    } else if (tilCount === 8) {
       toast("You're nearing your 10-TIL limit. Consider saving the rest as drafts.");
-    }
-
-    if (tilCount >= 10) {
+    } else if (tilCount >= 10) {
       toast.error("You've hit your 10-TIL limit for today.");
       const confirmed = confirm('Would you like to save this TIL as a draft?');
       if (confirmed) {
@@ -92,18 +101,16 @@ const TILForm = ({ userId }) => {
       <textarea
         {...register('content', { required: true })}
         placeholder="Today I learned..."
-        className="w-full p-2 rounded border"
+        className="w-full p-2 rounded border border-gray-300 focus:outline-none focus:ring focus:border-blue-500"
         disabled={isSubmitting}
       />
       <button
         type="submit"
         disabled={isSubmitting}
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
       >
         {isSubmitting ? 'Submitting...' : 'Submit TIL'}
       </button>
     </form>
   );
-};
-
-export default TILForm;
+}

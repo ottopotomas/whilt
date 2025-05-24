@@ -1,5 +1,5 @@
 // lib/fetchTils.ts
-import { supabase } from "../../lib/supabase";
+import { supabase } from "./supabase";
 // import type { TIL, Comment } from './types'; // ✅ correct
 
 
