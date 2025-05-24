@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from 'react';
 import TILForm from '../../components/TILForm';
-import { supabase } from '../../../lib/supabase'; // ✅ correct
+import { supabase } from '../../lib/supabase'; // ✅ correct
 
 export default function AddTILPage() {
   const [userId, setUserId] = useState<string | null>(null);
