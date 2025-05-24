@@ -39,17 +39,17 @@ export default function TILForm({ userId }: TILFormProps) {
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
 
-    const { data: profile, error: profileError } = await supabase
-      .from('profiles')
-      .select('is_premium')
-      .eq('id', userId)
-      .single();
+    const { error: profileError } = await supabase
+  .from('profiles')
+  .select('*')
+  .eq('id', userId)
+  .single();
 
-    if (profileError) {
-      toast.error('Error fetching user profile.');
-      setIsSubmitting(false);
-      return;
-    }
+if (profileError) {
+  toast.error('Error fetching user profile.');
+  setIsSubmitting(false);
+  return;
+}
 
     const tilCount = await getTodaysManualTILCount();
 
