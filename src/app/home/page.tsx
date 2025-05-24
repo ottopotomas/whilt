@@ -12,7 +12,7 @@ import Link from "next/link";
 export default function HomePage() {
   const isAuthenticated = false; // 🔄 Replace with real auth logic
   const [activeFilter, setActiveFilter] = useState("Trending");
-  const { tils, isLoading } = usePublicTILs();
+  const { data, isLoading } = usePublicTILs();
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-[#FFFCF5] text-[#1F1F1F]">
@@ -44,20 +44,21 @@ export default function HomePage() {
 
       {/* TIL Feed */}
       <main className="flex-1 w-full max-w-md px-4 py-6">
-        {isLoading ? (
-          <p className="text-center text-gray-400">Loading TILs...</p>
-        ) : tils.length === 0 ? (
-          <p className="text-center text-gray-500 italic">
-            Looks like no one has posted today’s wisdom yet. Be the first?
-          </p>
-        ) : (
-          <div className="space-y-4">
-            {tils.map((til) => (
-              <TILCard key={til.id} til={til} />
-            ))}
-          </div>
-        )}
-      </main>
+  {isLoading ? (
+    <p className="text-center text-gray-400">Loading TILs...</p>
+  ) : data.length === 0 ? (
+    <p className="text-center text-gray-500 italic">
+      Looks like no one has posted today’s wisdom yet. Be the first?
+    </p>
+  ) : (
+    <div className="space-y-4">
+      {data.map((til) => (
+        <TILCard key={til.id} til={til} />
+      ))}
+    </div>
+  )}
+</main>
+
 
       {/* Sticky Bottom Banner CTA (only for guests) */}
       {!isAuthenticated && (
