@@ -28,12 +28,12 @@ export default function TopNav() {
       <div className="flex justify-center flex-1">
         <Link href="/home" className="flex items-center space-x-2">
           <Image
-            src="/logo/logo-whilt-main.png"
-            alt="WHILT Logo"
-            width={64}
-            height={64}
-            priority
-          />
+  src="/logo/whilt-main-logo.png"
+  alt="WHILT Logo"
+  width={72}
+  height={72}
+  priority
+/>
         </Link>
       </div>
 
