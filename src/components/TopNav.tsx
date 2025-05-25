@@ -17,8 +17,8 @@ export default function TopNav() {
           <Image
             src={avatarUrl}
             alt="User Avatar"
-            width={36}
-            height={36}
+            width={144}
+            height={144}
             className="rounded-full"
           />
         )}
