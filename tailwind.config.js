@@ -1,3 +1,5 @@
+process.env.TAILWIND_MODE = 'build';
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
