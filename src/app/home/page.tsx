@@ -22,8 +22,12 @@ export default function HomePage() {
           <div className="flex justify-center mb-4">
             <Image src="/logo/whilt-main-logo.png" alt="WHILT logo" width={160} height={50} />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">what have i learned today?</h1>
-          <p className="italic text-gray-600 mb-4">Log it. Learn it. Test it. Grow it!</p>
+          <h1 className="text-2xl font-bold text-[#0A524B] text-center mt-8">
+  what have i learned today?
+</h1>
+<p className="text-center mt-2 text-[#4A8576] italic">
+  Log it. Learn it. Test it. Grow it!
+</p>
 
           <Link href="/login">
             <button className="bg-gray-900 text-white text-base font-semibold px-6 py-3 rounded-xl hover:bg-black transition">
