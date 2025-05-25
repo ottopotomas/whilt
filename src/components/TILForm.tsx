@@ -3,7 +3,7 @@
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../lib/supabaseClient';
 import { startOfToday } from 'date-fns';
 import toast from 'react-hot-toast';
 
