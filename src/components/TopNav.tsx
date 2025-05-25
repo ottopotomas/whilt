@@ -10,7 +10,7 @@ export default function TopNav() {
   const avatarUrl = session?.user?.user_metadata?.avatar_url;
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 border-b bg-white shadow-sm h-24">
+    <header className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 py-1 border-b bg-white shadow-sm">
       {/* Left side: Avatar if signed in */}
       <div className="w-12">
         {avatarUrl && (
@@ -30,9 +30,8 @@ export default function TopNav() {
           <Image
             src="/logo/whilt-main-logo.png"
             alt="WHILT Logo"
-            width={96} // triple size
+            width={96}   // Triple size
             height={96}
-            className="w-24 h-24"
             priority
           />
         </Link>
