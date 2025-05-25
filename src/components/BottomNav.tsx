@@ -47,7 +47,7 @@ export default function BottomNav() {
   };
 
   return (
-    <nav className="fixed bottom-0 left-0 w-full bg-[#E6FAF4] border-t border-[#B6E2DA] shadow-md flex justify-around py-2 z-40">
+    <nav className="fixed bottom-0 left-0 w-full border-t bg-white shadow-md flex justify-around py-2 z-40">
       {navItems.map((item) => {
         const isActive = pathname.startsWith(item.href);
         return (
