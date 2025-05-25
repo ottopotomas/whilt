@@ -3,7 +3,6 @@
 import { Settings } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSession } from "@supabase/auth-helpers-react";
 
 export default function TopNav() {
  
