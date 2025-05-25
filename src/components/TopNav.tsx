@@ -30,8 +30,8 @@ export default function TopNav() {
           <Image
             src="/logo/whilt-main-logo.png"
             alt="WHILT Logo"
-            width={120} // Double the visual size (was ~60–64)
-            height={48} // Maintain logo aspect ratio
+            width={240} // Double the visual size (was ~60–64)
+            height={96} // Maintain logo aspect ratio
             priority
             className="object-contain"
           />
