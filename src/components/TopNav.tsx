@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useSession } from "@supabase/auth-helpers-react";
 
 export default function TopNav() {
-  const session = useSession();
  
   return (
     <header className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 py-3 border-b bg-white shadow-sm">
