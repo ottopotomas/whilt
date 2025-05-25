@@ -10,8 +10,8 @@ export default function TopNav() {
   const avatarUrl = session?.user?.user_metadata?.avatar_url;
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 py-1 border-b bg-white shadow-sm">
-      {/* Left side: Avatar if signed in */}
+    <header className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 py-2 border-b bg-white shadow-sm">
+      {/* Left: Avatar if signed in */}
       <div className="w-12">
         {avatarUrl && (
           <Image
@@ -26,18 +26,19 @@ export default function TopNav() {
 
       {/* Center: Logo */}
       <div className="flex justify-center flex-1">
-        <Link href="/home" className="flex items-center space-x-2">
+        <Link href="/home">
           <Image
             src="/logo/whilt-main-logo.png"
             alt="WHILT Logo"
-            width={96}   // Triple size
-            height={96}
+            width={120} // Double the visual size (was ~60–64)
+            height={48} // Maintain logo aspect ratio
             priority
+            className="object-contain"
           />
         </Link>
       </div>
 
-      {/* Right side: Settings */}
+      {/* Right: Settings */}
       <div className="w-12 flex justify-end pr-2">
         <Link href="/settings" className="text-gray-600 hover:text-black">
           <Settings size={22} />
