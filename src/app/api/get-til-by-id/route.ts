@@ -1,6 +1,6 @@
 // src/app/api/get-til-by-id/route.ts
 
-import { supabase } from '../../../lib/supabase';
+import { supabaseAdmin as supabase } from '../../../lib/supabaseAdmin';
 import { NextResponse } from 'next/server';
 
 export async function GET(req: Request) {

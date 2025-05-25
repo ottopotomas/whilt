@@ -1,7 +1,6 @@
 // lib/fetchTils.ts
-import { supabase } from "./supabase";
-// import type { TIL, Comment } from './types'; // ✅ correct
-
+import { supabase } from "./supabaseClient"; // use client-side supabase instance
+// import type { TIL } from './types'; // Uncomment and define if you want type safety
 
 export async function fetchPublicTils() {
   const { data, error } = await supabase
@@ -15,5 +14,5 @@ export async function fetchPublicTils() {
     return [];
   }
 
-  return data;
+  return data || [];
 }
