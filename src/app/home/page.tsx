@@ -16,27 +16,24 @@ export default function HomePage() {
     <div className="min-h-screen flex flex-col items-center bg-[#FFFCF5] text-[#1F1F1F]">
       {/* Hero Section - only for guests */}
       {!isAuthenticated && (
-        <section className="bg-[#FFFCF5] px-6 pt-6 pb-10 text-center border-b border-gray-200 w-full">
-          <h1 className="text-2xl md:text-3xl font-bold text-[#0A524B] mt-4">
-            what have i learned today?
-          </h1>
-          <p className="mt-2 text-[#4A8576] italic">
-            Log it. Learn it. Test it. Grow it!
-          </p>
+        <section className="bg-[#FFFCF5] px-6 pt-2 pb-8 text-center border-b border-gray-200 w-full">
+  <h1 className="text-2xl font-bold text-[#0A524B] mt-2 mb-2">
+    what have i learned today?
+  </h1>
+  <p className="text-[#4A8576] italic mb-6">
+    Log it. Learn it. Test it. Grow it!
+  </p>
 
-          <div className="mt-6">
-            <Link href="/login">
-              <button className="bg-gray-900 text-white text-base font-semibold px-6 py-3 rounded-xl hover:bg-black transition">
-                Sign up or Log in
-              </button>
-            </Link>
-          </div>
+  <Link href="/login">
+    <button className="bg-gray-900 text-white text-base font-semibold px-6 py-3 rounded-xl hover:bg-black transition mb-6">
+      Sign up or Log in
+    </button>
+  </Link>
 
-          <p className="mt-5 text-sm text-gray-700">
-            Turning casual discovery into intentional learning.{" "}
-            <span className="italic">Learn smarter.</span>
-          </p>
-        </section>
+  <p className="text-sm text-gray-700">
+    Turning casual discovery into intentional learning. <span className="italic">Learn smarter.</span>
+  </p>
+</section>
       )}
 
       {/* Filter tabs - only for signed in users */}
