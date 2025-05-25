@@ -1,3 +1,5 @@
+'use client';
+
 // components/AddTILButton.tsx
 import { usePathname, useRouter } from "next/navigation";
 import { Plus } from "lucide-react";
