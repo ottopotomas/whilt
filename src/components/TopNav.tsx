@@ -17,8 +17,8 @@ export default function TopNav() {
           <Image
             src={avatarUrl}
             alt="User Avatar"
-            width={144}
-            height={144}
+            width={38}
+            height={38}
             className="rounded-full"
           />
         )}
@@ -29,9 +29,9 @@ export default function TopNav() {
         <Link href="/home" className="flex items-center space-x-2">
           <Image
   src="/logo/whilt-main-logo.png"
-  alt="WHILT Logo"
-  width={72}
-  height={72}
+  alt="WHILT Main Logo"
+  width={144} // Triple the original 32px size
+  height={144}
   priority
 />
         </Link>
