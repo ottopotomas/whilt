@@ -1,9 +1,11 @@
 // src/app/layout.tsx
-import './globals.css';
+import "./globals.css"; // Global styles
 import type { ReactNode } from "react";
-import { Toaster } from "react-hot-toast";
-import "./globals.css"; // if using Tailwind/global styles
 import { Metadata } from "next";
+import TopNav from "../components/TopNav";
+import AddTILButton from "../components/AddTILButton";
+import BottomNav from "../components/BottomNav";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "WHILT",
@@ -13,12 +15,24 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <head />
+      <head></head>
       <body className="bg-gray-50 text-gray-900 min-h-screen antialiased">
-        <main className="flex flex-col min-h-screen">
+        {/* ✅ Top Navigation */}
+        <TopNav />
+
+        {/* ✅ Page Content */}
+        <main className="pt-16 pb-20 px-4">
           {children}
         </main>
-        <Toaster position="top-center" />
+
+        {/* ✅ Floating Add Button */}
+        <AddTILButton />
+
+        {/* ✅ Bottom Navigation */}
+        <BottomNav />
+
+        {/* ✅ Toast Notifications */}
+        <Toaster position="top-center" richColors />
       </body>
     </html>
   );
