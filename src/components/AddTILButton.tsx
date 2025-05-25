@@ -28,7 +28,7 @@ export default function AddTILButton() {
   return (
     <button
       onClick={handleClick}
-      className="fixed bottom-6 right-6 w-14 h-14 bg-[#1F1F1F] text-white rounded-full shadow-lg flex items-center justify-center hover:opacity-90 z-50"
+      className="fixed bottom-20 right-6 w-14 h-14 bg-[#1F1F1F] text-white rounded-full shadow-lg flex items-center justify-center hover:opacity-90 z-50 transition ring-2 ring-white/10 hover:ring-white/20"
       aria-label="Add new TIL"
     >
       <Plus size={28} />
