@@ -1,6 +1,6 @@
-'use client';
-
+// components/BottomNav.tsx
 import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
 import {
   Home,
   Medal,
@@ -8,9 +8,8 @@ import {
   BarChart2,
   Bell,
 } from "lucide-react";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 import React from "react";
-import { useSession } from "@supabase/auth-helpers-react";
 
 const navItems = [
   {
@@ -33,8 +32,7 @@ const navItems = [
 export default function BottomNav() {
   const pathname = usePathname();
   const router = useRouter();
-  const session = useSession();
-  const isAuthenticated = !!session;
+  const isAuthenticated = false; // 🔐 Replace with actual auth logic
 
   // Hide on certain routes
   const hiddenRoutes = ["/login", "/signup", "/settings"];
@@ -50,22 +48,22 @@ export default function BottomNav() {
   };
 
   return (
-    <nav className="fixed bottom-0 left-0 w-full bg-[#E9FAF7] border-t border-teal-100 shadow-sm flex justify-around py-2 z-40 rounded-t-2xl">
-  {navItems.map((item) => {
-    const isActive = pathname.startsWith(item.href);
-    return (
-      <button
-        key={item.label}
-        onClick={() => handleClick(item)}
-        className={`flex flex-col items-center text-xs ${
-          isActive ? "text-[#0A8372] font-semibold" : "text-[#0A8372]/60"
-        } hover:text-[#0A8372] transition`}
-      >
-        {item.icon}
-        <span className="mt-1 text-[11px]">{item.label}</span>
-      </button>
-    );
-  })}
-</nav>
+    <nav className="fixed bottom-0 left-0 w-full border-t bg-white shadow-md flex justify-around py-2 z-40">
+      {navItems.map((item) => {
+        const isActive = pathname.startsWith(item.href);
+        return (
+          <button
+            key={item.label}
+            onClick={() => handleClick(item)}
+            className={`flex flex-col items-center text-xs text-gray-500 hover:text-black ${
+              isActive ? "text-black font-semibold" : ""
+            }`}
+          >
+            {item.icon}
+            <span>{item.label}</span>
+          </button>
+        );
+      })}
+    </nav>
   );
 }
