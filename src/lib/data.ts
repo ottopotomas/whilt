@@ -25,7 +25,7 @@ export async function getLinkedTILs(id: string): Promise<{
   const { data: children } = await supabase
     .from("tils")
     .select("*")
-    .contains("parent_id", [id]); // adjust to match schema
+    .eq("parent_id", id); // updated from .contains() to .eq()
 
   return {
     parent: parent || null,
@@ -67,7 +67,6 @@ export async function getTILComments(tilId: string): Promise<Comment[]> {
     return [];
   }
 
-  // Normalize user field (flatten `profiles` into `user`)
   return (data || []).map((comment: any) => ({
     ...comment,
     user: comment.profiles || { username: "unknown" },
