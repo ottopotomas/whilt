@@ -1,8 +1,9 @@
 // src/app/home/page.tsx
 "use client";
 
+import OnboardingFlow from '../../components/onboarding/OnboardingFlow';
 import React, { useState } from "react";
-import TILCard from "../../components/TILCard";
+import TILCard from "../til/TILCard";
 import FeedFilter from "../../components/FeedFilter";
 import { usePublicTILs } from "../../hooks/usePublicTILs";
 import Link from "next/link";
