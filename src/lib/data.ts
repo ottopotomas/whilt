@@ -1,4 +1,4 @@
-import { supabase } from "./supabaseClient";
+import { supabase } from '@/lib/supabaseClient';
 import type { TIL, Comment } from "./types";
 
 export async function getTILBySlug(slug: string): Promise<TIL | null> {
