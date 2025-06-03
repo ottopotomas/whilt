@@ -8,6 +8,18 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 export default function SubscriptionPage() {
   const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">("monthly");
 
+  // Ensure TIERS is an array and each tier has expected shape
+  const validTiers = Array.isArray(TIERS)
+    ? TIERS.filter(
+        (tier) =>
+          tier &&
+          typeof tier.name === "string" &&
+          tier.price &&
+          typeof tier.price.monthly === "number" &&
+          typeof tier.price.yearly === "number"
+      )
+    : [];
+
   return (
     <main className="max-w-6xl mx-auto px-4 py-12">
       <div className="text-center mb-10">
@@ -33,14 +45,20 @@ export default function SubscriptionPage() {
       </div>
 
       <div className="grid gap-8 md:grid-cols-3">
-        {TIERS.map((tier: Tier) => (
-          <TierCard
-            key={tier.name}
-            {...tier}
-            price={billingCycle === "monthly" ? tier.price.monthly : tier.price.yearly}
-            billingCycle={billingCycle}
-          />
-        ))}
+        {validTiers.length > 0 ? (
+          validTiers.map((tier: Tier) => (
+            <TierCard
+              key={tier.name}
+              {...tier}
+              price={billingCycle === "monthly" ? tier.price.monthly : tier.price.yearly}
+              billingCycle={billingCycle}
+            />
+          ))
+        ) : (
+          <p className="text-center col-span-full text-muted-foreground">
+            Plans are loading or unavailable.
+          </p>
+        )}
       </div>
     </main>
   );
