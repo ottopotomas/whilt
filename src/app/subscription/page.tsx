@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { Tier, tiers as TIERS } from "@/lib/tiers";
 import TierCard from "@/components/Subscription/TierCard";
