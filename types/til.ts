@@ -1,3 +1,4 @@
+export {}; // makes it an ES module, safe to remove later
 export type TIL = {
   id: string;
   user: string;
