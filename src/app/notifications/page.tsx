@@ -1,6 +1,6 @@
 "use client";
 
-import { NotificationCard } from "../../components/NotificationCard";
+import NotificationCard from "../../components/NotificationCard";
 import { type NotificationType } from "../../components/icons/NotificationIcon";
 
 interface Notification {
