@@ -5,7 +5,7 @@ import OnboardingFlow from "../../components/onboarding/OnboardingFlow";
 import TILCard from "../til/TILCard";
 import FeedFilter from "../../components/FeedFilter";
 import { usePublicTILs } from "../../hooks/usePublicTILs";
-import { TIL } from "@/lib/types";
+import { TIL } from "../../lib/types"; // Use direct import if @/lib/types isn't resolving
 import Link from "next/link";
 
 export default function HomePage() {
@@ -17,7 +17,6 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-[#FFFCF5] text-[#1F1F1F]">
-
       {isAuthenticated && !hasCompletedOnboarding && <OnboardingFlow />}
 
       {!isAuthenticated && (
@@ -28,13 +27,11 @@ export default function HomePage() {
           <p className="text-[#4A8576] italic mb-6">
             Log it. Learn it. Test it. Grow it!
           </p>
-
           <Link href="/login">
             <button className="bg-gray-900 text-white text-base font-semibold px-6 py-3 rounded-xl hover:bg-black transition mb-6">
               Sign up or Log in
             </button>
           </Link>
-
           <p className="text-sm text-gray-700">
             Turning casual discovery into intentional learning.{" "}
             <span className="italic">Learn smarter.</span>
