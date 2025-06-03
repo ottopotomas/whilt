@@ -26,10 +26,10 @@ import Link from "next/link";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useSession } from "@supabase/auth-helpers-react";
-import MoreOptionsMenu from "../../components/MoreOptionsMenu"; // adjust path if needed
-import type { ReactElement } from "react";
+import MoreOptionsMenu from "../../components/MoreOptionsMenu";
+import type { TIL } from "@/lib/types";
 
-const categoryIcons: Record<string, ReactElement> = {
+const categoryIcons: Record<string, React.ReactElement> = {
   Science: <FlaskConical size={14} />,
   History: <Landmark size={14} />,
   Literature: <BookOpenCheck size={14} />,
@@ -63,25 +63,12 @@ const categoryStyles: Record<string, { bg: string; text: string }> = {
   Other: { bg: "bg-[#F3F3F3]/40", text: "text-[#333]" },
 };
 
-type TIL = {
-  id: string;
-  user: string;
-  user_id?: string;
-  avatarUrl?: string;
-  content: string;
-  category: string;
-  imageUrl?: string;
-  sourceUrl?: string;
-  addedByCount?: number;
-  created_at?: string;
-};
-
 function TILCard({ til }: { til: TIL }) {
   const router = useRouter();
   const session = useSession();
 
   const currentUserId = session?.user?.id;
-  const userIsPremium = true; // Replace with actual premium logic
+  const userIsPremium = true; // TODO: Replace with actual logic
   const isOwner = til.user_id === currentUserId;
 
   const handleAuthPrompt = (action: string) => {
@@ -104,6 +91,14 @@ function TILCard({ til }: { til: TIL }) {
   const theme = categoryStyles[til.category] || categoryStyles["Other"];
   const icon = categoryIcons[til.category] || categoryIcons["Other"];
 
+  let username = "anonymous";
+let avatarUrl: string | undefined = undefined;
+
+if (typeof til.user === "object" && til.user !== null) {
+  username = til.user.username?.trim() || til.user.name?.trim() || "anonymous";
+  avatarUrl = til.user.avatar_url;
+}
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
@@ -111,14 +106,14 @@ function TILCard({ til }: { til: TIL }) {
       transition={{ duration: 0.25, ease: "easeOut" }}
       className="bg-white rounded-2xl shadow border border-gray-200 p-4 space-y-3 transform transition hover:-translate-y-1 hover:shadow-md"
     >
-      {/* Header Row */}
+      {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-full overflow-hidden bg-gray-200">
-            {til.avatarUrl ? (
+            {avatarUrl ? (
               <Image
-                src={til.avatarUrl}
-                alt={til.user}
+                src={avatarUrl}
+                alt={username}
                 width={36}
                 height={36}
                 className="w-full h-full object-cover"
@@ -128,7 +123,7 @@ function TILCard({ til }: { til: TIL }) {
             )}
           </div>
           <div className="flex flex-col">
-            <span className="text-sm font-semibold text-[#1F1F1F]">@{til.user}</span>
+            <span className="text-sm font-semibold text-[#1F1F1F]">@{username}</span>
             {til.created_at && (
               <span className="text-xs text-gray-400">
                 {new Date(til.created_at).toLocaleDateString()}
@@ -180,7 +175,7 @@ function TILCard({ til }: { til: TIL }) {
         )}
       </div>
 
-      {/* Action Row */}
+      {/* Action Buttons */}
       <div className="flex justify-between items-center pt-3 border-t border-gray-100 text-gray-500 text-sm">
         <button onClick={() => handleAuthPrompt("like TILs")} className="hover:text-black">
           <Heart size={18} />
