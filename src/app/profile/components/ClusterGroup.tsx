@@ -19,18 +19,14 @@ export default function ClusterGroup({ cluster }: Props) {
         🧠 {cluster.title}
       </h3>
 
-      {cluster.tils.map((til) => (
-        <TILCard
-          key={til.id}
-          til={{
-            ...til,
-            user:
-              typeof til.user === "string"
-                ? { username: til.user }
-                : til.user ?? { username: "unknown" },
-          }}
-        />
-      ))}
+      {cluster.tils.map((til) => {
+        const normalizedUser =
+          typeof til.user === "string"
+            ? { username: til.user }
+            : til.user ?? { username: "unknown" };
+
+        return <TILCard key={til.id} til={{ ...til, user: normalizedUser }} />;
+      })}
     </section>
   );
 }
