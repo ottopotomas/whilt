@@ -1,9 +1,11 @@
 // src/components/Achievements/AchievementsTabs.tsx
 
+'use client';
+
 import React from 'react';
 import { cn } from '@/utils/utils';
 
-type Tab = 'all' | 'categories' | 'milestones' | 'community';
+export type Tab = 'all' | 'categories' | 'milestones' | 'community';
 
 const tabList: { id: Tab; label: string }[] = [
   { id: 'all', label: 'All' },
@@ -17,7 +19,7 @@ interface Props {
   onTabChange: (tab: Tab) => void;
 }
 
-const AchievementsTabs = ({ activeTab, onTabChange }: Props) => {
+const AchievementsTabs: React.FC<Props> = ({ activeTab, onTabChange }) => {
   return (
     <div className="flex border-b border-border">
       {tabList.map((tab) => (
