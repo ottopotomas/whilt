@@ -6,13 +6,12 @@ import { Button } from "@/components/ui/button";
 import { Tier } from "@/lib/tiers";
 import { cn } from "@/lib/utils";
 
-// ✅ Corrected prop type: omit `price` from Tier, then define our own
 type TierCardProps = Omit<Tier, "price"> & {
   price: number;
   billingCycle: "monthly" | "yearly";
 };
 
-export default function TierCard({
+export function TierCard({
   name,
   badge,
   highlight,
@@ -28,7 +27,6 @@ export default function TierCard({
       )}
     >
       <CardContent className="p-6 space-y-4 flex flex-col h-full">
-        {/* Header */}
         <div>
           <h3 className="text-xl font-semibold">
             {name}
@@ -41,7 +39,6 @@ export default function TierCard({
           <p className="text-sm text-muted-foreground">{highlight}</p>
         </div>
 
-        {/* Price */}
         <div>
           <span className="text-3xl font-bold">
             {price === 0 ? "Free" : `£${price}`}
@@ -53,7 +50,6 @@ export default function TierCard({
           )}
         </div>
 
-        {/* Features */}
         <ul className="space-y-2 text-sm text-muted-foreground flex-1">
           {features.map((feature, idx) => (
             <li key={idx} className="flex items-center gap-2">
@@ -67,7 +63,6 @@ export default function TierCard({
           ))}
         </ul>
 
-        {/* CTA Button */}
         <Button
           className={cn(
             "w-full mt-auto",

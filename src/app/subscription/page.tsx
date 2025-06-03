@@ -2,9 +2,7 @@
 
 import { useState } from "react";
 import { Tier, tiers as TIERS } from "@/lib/tiers";
-import TierCard from "@/components/Subscription/TierCard";
-
-// ✅ Prefer explicit path and confirm toggle-group.tsx exists with named exports
+import { TierCard } from "@/components/Subscription/TierCard";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 export default function SubscriptionPage() {
@@ -18,7 +16,6 @@ export default function SubscriptionPage() {
           Choose the plan that fits your pace — and your brain.
         </p>
 
-        {/* ✅ Optional: Comment this out if it’s breaking the build to test isolate */}
         <div className="mt-6 flex justify-center">
           <ToggleGroup
             type="single"
@@ -36,24 +33,14 @@ export default function SubscriptionPage() {
       </div>
 
       <div className="grid gap-8 md:grid-cols-3">
-        {TIERS?.length > 0 ? (
-          TIERS.map((tier: Tier) => (
-            <TierCard
-              key={tier.name}
-              {...tier}
-              price={
-                billingCycle === "monthly"
-                  ? tier.price.monthly
-                  : tier.price.yearly
-              }
-              billingCycle={billingCycle}
-            />
-          ))
-        ) : (
-          <p className="text-center col-span-full text-muted-foreground">
-            Plans are loading or unavailable.
-          </p>
-        )}
+        {TIERS.map((tier: Tier) => (
+          <TierCard
+            key={tier.name}
+            {...tier}
+            price={billingCycle === "monthly" ? tier.price.monthly : tier.price.yearly}
+            billingCycle={billingCycle}
+          />
+        ))}
       </div>
     </main>
   );
