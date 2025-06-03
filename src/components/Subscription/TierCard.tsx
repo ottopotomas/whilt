@@ -1,13 +1,15 @@
 "use client";
 
 import { Check, Lock } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Tier } from "@/lib/tiers";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
-type TierCardProps = Omit<Tier, "price"> & {
-  price: number;
+type TierCardProps = {
+  name: string;
+  badge?: string;
+  highlight?: string;
+  features: { label: string; included: boolean }[];
+  price: number; // number, from tier.price.monthly/yearly
   billingCycle: "monthly" | "yearly";
 };
 
@@ -27,18 +29,19 @@ export function TierCard({
       )}
     >
       <CardContent className="p-6 space-y-4 flex flex-col h-full">
-        <div>
-          <h3 className="text-xl font-semibold">
+        <CardHeader>
+          <CardTitle className="text-xl font-semibold flex items-center gap-2">
             {name}
             {badge && (
-              <span className="ml-2 text-xs bg-teal-100 text-teal-700 px-2 py-0.5 rounded-full">
+              <span className="text-xs bg-teal-100 text-teal-700 px-2 py-0.5 rounded-full">
                 {badge}
               </span>
             )}
-          </h3>
-          <p className="text-sm text-muted-foreground">{highlight}</p>
-        </div>
+          </CardTitle>
+          {highlight && <CardDescription>{highlight}</CardDescription>}
+        </CardHeader>
 
+        {/* Price */}
         <div>
           <span className="text-3xl font-bold">
             {price === 0 ? "Free" : `£${price}`}
@@ -50,6 +53,7 @@ export function TierCard({
           )}
         </div>
 
+        {/* Features */}
         <ul className="space-y-2 text-sm text-muted-foreground flex-1">
           {features.map((feature, idx) => (
             <li key={idx} className="flex items-center gap-2">
@@ -62,19 +66,22 @@ export function TierCard({
             </li>
           ))}
         </ul>
+      </CardContent>
 
-        <Button
+      {/* CTA Button */}
+      <CardFooter>
+        <button
           className={cn(
-            "w-full mt-auto",
+            "w-full py-2 rounded-md text-white font-semibold",
             name === "Free"
               ? "bg-gray-200 text-gray-600 cursor-default"
-              : "bg-teal-600 hover:bg-teal-700 text-white"
+              : "bg-teal-600 hover:bg-teal-700"
           )}
           disabled={name === "Free"}
         >
           {name === "Free" ? "Current Plan" : `Upgrade to ${name}`}
-        </Button>
-      </CardContent>
+        </button>
+      </CardFooter>
     </Card>
   );
 }

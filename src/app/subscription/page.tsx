@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { TierCard } from "@/components/Subscription/TierCard";
+import { tiers } from "@/lib/tiers";
 
 export default function SubscriptionPage() {
   const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">("monthly");
@@ -29,11 +31,22 @@ export default function SubscriptionPage() {
           </ToggleGroup>
         </div>
 
-        {/* Static placeholder tier grid */}
         <div className="grid gap-8 md:grid-cols-3 mt-12">
-          <div className="border p-6 rounded shadow text-center">Plan A - £0</div>
-          <div className="border p-6 rounded shadow text-center">Plan B - £5</div>
-          <div className="border p-6 rounded shadow text-center">Plan C - £10</div>
+          {tiers.map((tier) => {
+  const price = billingCycle === "monthly" ? tier.price.monthly : tier.price.yearly;
+
+  return (
+    <TierCard
+      key={tier.name}
+      name={tier.name}
+      badge={tier.badge}
+      highlight={tier.highlight}
+      features={tier.features}
+      price={price}
+      billingCycle={billingCycle}
+    />
+  );
+})}
         </div>
       </div>
     </main>
