@@ -1,8 +1,5 @@
-import { NextResponse } from "next/server";
-import { OpenAIStream, StreamingTextResponse } from "ai"; // optional streaming
-import OpenAI from "openai";
-
-const openai = new OpenAI();
+import { streamText } from 'ai';
+import { openai } from '@ai-sdk/openai';
 
 export async function POST(req: Request) {
   const { name, rarity, linkedTilContent } = await req.json();
@@ -17,15 +14,11 @@ Inspired by this learning: "${linkedTilContent}"
 Write a short, clever lore blurb for this item that feels unique and rich in personality.
   `;
 
-  const response = await openai.chat.completions.create({
-    model: "gpt-4",
-    stream: true,
-    messages: [
-      { role: "system", content: "You are a creative fantasy writer." },
-      { role: "user", content: prompt }
-    ],
+  const result = streamText({
+    model: openai('gpt-4'),
+    system: 'You are a creative fantasy writer.',
+    prompt,
   });
 
-  const stream = OpenAIStream(response);
-  return new StreamingTextResponse(stream);
+  return result.toDataStreamResponse();
 }
