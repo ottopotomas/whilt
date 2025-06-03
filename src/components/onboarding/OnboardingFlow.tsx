@@ -4,14 +4,17 @@ import { useState } from 'react';
 import OnboardingIntroPopup from './OnboardingIntroPopup';
 import OnboardingWelcomePopup from './OnboardingWelcomePopup';
 import OnboardingCategoryPopup from './OnboardingCategoryPopup';
-import OnboardingSourcePopup from "./OnboardingSourcePopup";
+import OnboardingSourcePopup from './OnboardingSourcePopup';
+import OnboardingBranchPopup from './OnboardingBranchPopup';
+import OnboardingAchievementsPopup from './OnboardingAchievementsPopup';
+import OnboardingFinalPopup from './OnboardingFinalPopup';
 
 type OnboardingStep =
   | 1 // intro
-  | 2 // add til
+  | 2 // add TIL
   | 3 // category
-  | 4 // source (coming)
-  | 5 // branch TIL (coming)
+  | 4 // source
+  | 5 // related TIL
   | 6 // achievements
   | 7 // final screen
   | 'done';
@@ -19,12 +22,18 @@ type OnboardingStep =
 export default function OnboardingFlow() {
   const [step, setStep] = useState<OnboardingStep>(1);
   const [tilText, setTilText] = useState('');
-  const [suggestedCategory, setSuggestedCategory] = useState('');
+  const [suggestedCategory, setSuggestedCategory] = useState('History');
+  const [suggestedSource, setSuggestedSource] = useState({
+    url: 'https://example.com/capybaras-in-history',
+    summary: 'This article explores ancient beliefs around capybaras in Andean mythology.',
+  });
+  const [suggestedBranchTIL, setSuggestedBranchTIL] = useState(
+    'TIL capybaras were often depicted as symbols of peace in indigenous folklore.'
+  );
 
   const handleSkip = () => {
-    // You should save `hasCompletedOnboarding: true` to Supabase or user metadata here
     console.log('Onboarding skipped');
-    setStep('done'); // Exit flow
+    setStep('done');
   };
 
   const handleTILSubmit = async (til: string) => {
@@ -49,19 +58,12 @@ export default function OnboardingFlow() {
 
   const handleCategorySelect = (category: string) => {
     console.log('User selected category:', category);
-    // Optionally save category
-    setStep(4); // Proceed to source step next
+    setStep(4);
   };
 
-  // Final exit point after step 6
-  const completeOnboarding = () => {
-    console.log('Onboarding complete!');
-    // Save to Supabase: `hasCompletedOnboarding: true`
-    setStep('done');
-  };
+  if (step === 'done') return null;
 
-  // Step-based rendering
-  if (step === 'done') {
+  if (step === 1) {
     return (
       <OnboardingIntroPopup
         onNext={() => setStep(2)}
@@ -71,12 +73,12 @@ export default function OnboardingFlow() {
   }
 
   if (step === 2) {
-    return (    
+    return (
       <OnboardingWelcomePopup
-       username={"friend"} // ✅ Add this line
-  onNext={handleTILSubmit}
-  onSkip={handleSkip}
-     />
+        username="friend"
+        onNext={handleTILSubmit}
+        onSkip={handleSkip}
+      />
     );
   }
 
@@ -90,77 +92,47 @@ export default function OnboardingFlow() {
     );
   }
 
-  // Placeholder for Step 4–6
   if (step === 4) {
-  return (
-    <OnboardingSourcePopup
-      suggestedSource={{
-        url: "https://example.com/capybaras-in-history",
-        summary:
-          "This article explores ancient beliefs around capybaras in Andean mythology.",
-      }}
-      onSelectSource={(url) => {
-        console.log("Selected source:", url);
-        setStep(5);
-      }}
-      onSkip={() => setStep(5)}
-    />
-  );
-}
+    return (
+      <OnboardingSourcePopup
+        suggestedSource={suggestedSource}
+        onSelectSource={() => setStep(5)}
+        onSkip={() => setStep(5)}
+      />
+    );
+  }
 
   if (step === 5) {
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-40 z-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 text-center">
-          <p className="text-sm mb-4">Step 5 (Branch TIL) coming soon...</p>
-          <button
-            onClick={() => setStep(6)}
-            className="bg-orange-500 text-white py-2 px-6 rounded-xl"
-          >
-            Skip for now
-          </button>
-        </div>
-      </div>
+      <OnboardingBranchPopup
+        originalTIL={tilText}
+        suggestedTIL={suggestedBranchTIL}
+        onAcceptBranch={() => setStep(6)}
+        onSkip={() => setStep(6)}
+      />
     );
   }
 
   if (step === 6) {
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-40 z-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 text-center">
-          <p className="text-sm mb-4">Step 6 (Achievements) coming soon...</p>
-          <button
-            onClick={() => setStep(7)}
-            className="bg-orange-500 text-white py-2 px-6 rounded-xl"
-          >
-            Finish
-          </button>
-        </div>
-      </div>
+      <OnboardingAchievementsPopup
+        onComplete={() => setStep(7)}
+        onSkip={() => setStep(7)}
+      />
     );
   }
 
   if (step === 7) {
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-40 z-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 text-center">
-          <h2 className="text-lg font-bold mb-2">🎉 You’re ready!</h2>
-          <p className="text-sm text-gray-700 mb-4">
-            You’ve planted your first seed of knowledge. Let’s grow it together 🌱
-          </p>
-          <p className="text-sm text-gray-500 italic">
-            Make sure to check back in 12–24 hours — I’ll have your first memory test ready!
-          </p>
-          <button
-            onClick={completeOnboarding}
-            className="mt-6 bg-[#0A524B] text-white py-2 px-6 rounded-xl"
-          >
-            Go to Feed
-          </button>
-        </div>
-      </div>
+      <OnboardingFinalPopup
+        onFinish={() => {
+          console.log('User completed onboarding!');
+          // Save to Supabase here: hasCompletedOnboarding = true
+          setStep('done');
+        }}
+      />
     );
   }
 
-  return null; // Onboarding complete
+  return null;
 }
