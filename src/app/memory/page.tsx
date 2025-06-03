@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { supabase } from '../@/lib/supabaseClient';
+import { supabase } from '@/lib/supabaseClient';
 import { format } from 'date-fns';
 import type { TIL } from '../../lib/types';
 
@@ -58,7 +58,7 @@ export default function MemoryPage() {
       {tils.map((til) => (
         <div key={til.id} className="p-4 bg-white rounded shadow">
           <p className="text-sm text-gray-500">
-            {format(new Date(til.created_at), 'PP')}
+            {til.created_at ? format(new Date(til.created_at), 'PP') : 'Unknown date'}
           </p>
           <p className="text-base">{til.content}</p>
           {til.category && (
