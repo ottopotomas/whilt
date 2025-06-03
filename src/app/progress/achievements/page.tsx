@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
-import AchievementsTabs from ../components/Achievements/AchievementsTabs';
-import AchievementsAll from '@/components/Achievements/AchievementsAll';
-import AchievementsCategories from '@/components/Achievements/AchievementsCategories';
-import AchievementsMilestones from '@/components/Achievements/AchievementsMilestones';
-import AchievementsCommunity from '@/components/Achievements/AchievementsCommunity';
+import AchievementsTabs from '../../../components/Achievements/AchievementsTabs';
+import AchievementsAll from '../../../components/Achievements/AchievementsAll';
+import AchievementsCategories from '../../../components/Achievements/AchievementsCategories';
+import AchievementsMilestones from '../../../components/Achievements/AchievementsMilestones';
+import AchievementsCommunity from '../../../components/Achievements/AchievementsCommunity';
 
 type Tab = 'all' | 'categories' | 'milestones' | 'community';
 
