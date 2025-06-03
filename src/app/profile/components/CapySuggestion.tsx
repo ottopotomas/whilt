@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Sparkles, Lock } from "lucide-react";
 import type { TIL } from "../../../../types/til";
-import { supabase } from "../../@/lib/supabaseClient";
+import { supabase } from '@/lib/supabaseClient';
 
 type Props = {
   isPremium: boolean;
@@ -13,6 +13,7 @@ type Props = {
 
 export default function CapySuggestion({ isPremium }: Props) {
   const [suggestedTIL, setSuggestedTIL] = useState<TIL | null>(null);
+  const [contextLine, setContextLine] = useState<string>("");
 
   useEffect(() => {
     const fetchSuggestion = async () => {
@@ -29,6 +30,7 @@ export default function CapySuggestion({ isPremium }: Props) {
 
       if (!error && data) {
         setSuggestedTIL(data as TIL);
+        setContextLine(data.context || "This links to your earlier TIL on a similar topic.");
       }
     };
 
@@ -63,6 +65,11 @@ export default function CapySuggestion({ isPremium }: Props) {
         >
           TIL: {suggestedTIL.content}
         </Link>
+        {isPremium && (
+          <p className="text-xs text-gray-500 italic mt-1">
+            💡 {contextLine}
+          </p>
+        )}
         <div className="text-[10px] text-gray-400 mt-1 flex items-center gap-1">
           <Sparkles size={12} /> Premium Insight
         </div>
@@ -71,6 +78,17 @@ export default function CapySuggestion({ isPremium }: Props) {
       {!isPremium && (
         <div className="absolute top-2 right-2 text-[10px] font-semibold text-yellow-600 bg-yellow-100 px-2 py-0.5 rounded-full flex items-center gap-1">
           <Lock size={12} /> Premium only
+        </div>
+      )}
+
+      {!isPremium && (
+        <div className="absolute bottom-2 right-3">
+          <Link
+            href="/upgrade"
+            className="text-xs text-blue-600 font-medium hover:underline"
+          >
+            Try Premium →
+          </Link>
         </div>
       )}
     </div>
