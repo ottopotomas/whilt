@@ -1,5 +1,5 @@
 "use client";
 
 export default function SubscriptionPage() {
-  return <div>Subscription page minimal test</div>;
+  return <div>Subscription Page Minimal Render Test</div>;
 }
