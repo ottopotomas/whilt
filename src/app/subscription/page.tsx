@@ -28,6 +28,13 @@ export default function SubscriptionPage() {
             <ToggleGroupItem value="yearly">Yearly</ToggleGroupItem>
           </ToggleGroup>
         </div>
+
+        {/* Static placeholder tier grid */}
+        <div className="grid gap-8 md:grid-cols-3 mt-12">
+          <div className="border p-6 rounded shadow text-center">Plan A - £0</div>
+          <div className="border p-6 rounded shadow text-center">Plan B - £5</div>
+          <div className="border p-6 rounded shadow text-center">Plan C - £10</div>
+        </div>
       </div>
     </main>
   );
