@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "../../../lib/supabaseClient";
+import { supabase } from "../../@/lib/supabaseClient";
 import type { TIL } from "../../../../types/til";
 
 import ClusterGroup from "./ClusterGroup";
