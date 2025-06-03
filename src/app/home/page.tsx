@@ -5,7 +5,7 @@ import OnboardingFlow from "../../components/onboarding/OnboardingFlow";
 import TILCard from "../til/TILCard";
 import FeedFilter from "../../components/FeedFilter";
 import { usePublicTILs } from "../../hooks/usePublicTILs";
-import { TIL } from "../../lib/types"; // Use direct import if @/lib/types isn't resolving
+import { TIL } from "../../lib/types"; // Adjust path if @ alias fails
 import Link from "next/link";
 
 export default function HomePage() {
@@ -53,16 +53,7 @@ export default function HomePage() {
         ) : (
           <div className="space-y-4">
             {data.map((til: TIL) => (
-              <TILCard
-                key={til.id}
-                til={{
-                  ...til,
-                  user:
-                    typeof til.user === "string"
-                      ? { username: til.user }
-                      : til.user,
-                }}
-              />
+              <TILCard key={til.id} til={til} />
             ))}
           </div>
         )}

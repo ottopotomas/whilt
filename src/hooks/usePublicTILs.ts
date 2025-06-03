@@ -16,7 +16,11 @@ export function usePublicTILs() {
           user_id: "abc123",
           created_at: "2025-06-02T12:00:00Z",
           is_draft: false,
-          user: "James Smith",
+          user: {
+            username: "jamessmith",
+            name: "James Smith",
+            avatar_url: "",
+          },
         },
       ]);
       setIsLoading(false);
