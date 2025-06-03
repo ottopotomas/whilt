@@ -2,7 +2,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import TILForm from '../til/TILForm';
+import TILForm from '@/app/til/TILForm';
 import { supabase } from '../../lib/supabaseClient'; // ✅ correct
 
 export default function AddTILPage() {
