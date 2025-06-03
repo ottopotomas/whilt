@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { Tier, tiers as TIERS } from "@/lib/tiers";
-import TierCard from "@/components/Subscription/TierCard"; // ✅ Use default import directly
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"; // ✅ Absolute path for consistency
+import TierCard from "@/components/Subscription/TierCard";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 export default function SubscriptionPage() {
   const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">("monthly");
