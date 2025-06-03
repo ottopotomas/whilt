@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Sparkles, Lock } from "lucide-react";
 import type { TIL } from "../../../../types/til";
-import { supabase } from "../../../lib/supabaseClient";
+import { supabase } from "../../@/lib/supabaseClient";
 
 type Props = {
   isPremium: boolean;
