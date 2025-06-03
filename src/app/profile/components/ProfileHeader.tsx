@@ -1,67 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Image from "next/image";
-import { supabase } from "../../@/lib/supabaseClient";
+import { supabase } from '@/lib/supabaseClient';
 import type { TIL } from "../../../../types/til";
 
-export default function ProfileHeader() {
-  const [tils, setTils] = useState<TIL[]>([]);
-  const [tilCount, setTilCount] = useState(0);
-  const [streak, setStreak] = useState(0);
-  const [isPremium, setIsPremium] = useState(false);
-  const [loading, setLoading] = useState(true);
+interface ProfileHeaderProps {
+  tilCount: number;
+  streak: number;
+  isPremium: boolean;
+  lastLearnedAt?: string; // optional enhancement if you want to pass it in
+}
 
-  useEffect(() => {
-    const loadData = async () => {
-      const { data: { user }, error: userError } = await supabase.auth.getUser();
-      if (userError || !user) {
-        setLoading(false);
-        return;
-      }
-
-      const { data: tilsData } = await supabase
-        .from("tils")
-        .select("*")
-        .eq("user_id", user.id)
-        .eq("is_draft", false)
-        .order("created_at", { ascending: false });
-
-      setTils(tilsData || []);
-      setTilCount(tilsData?.length || 0);
-      setStreak(calculateStreak(tilsData || []));
-
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("is_premium")
-        .eq("id", user.id)
-        .single();
-
-      setIsPremium(profile?.is_premium || false);
-      setLoading(false);
-    };
-
-    loadData();
-  }, []);
-
-  const calculateStreak = (tils: TIL[]) => {
-    const today = new Date();
-    let streak = 0;
-
-    for (let i = 0; i < tils.length; i++) {
-      const tilDate = new Date(tils[i].created_at);
-      const daysAgo = Math.floor((today.getTime() - tilDate.getTime()) / (1000 * 60 * 60 * 24));
-      if (daysAgo === streak) {
-        streak += 1;
-      } else if (daysAgo > streak) {
-        break;
-      }
-    }
-    return streak;
-  };
-
-  if (loading) return <p className="p-4">Loading your profile...</p>;
-
+export default function ProfileHeader({
+  tilCount,
+  streak,
+  isPremium,
+  lastLearnedAt,
+}: ProfileHeaderProps) {
   return (
     <section className="space-y-6">
       {/* Avatar + Stats */}
@@ -70,9 +24,9 @@ export default function ProfileHeader() {
         <p><strong>TILs logged:</strong> {tilCount}</p>
         <p><strong>🔥 Streak:</strong> {streak} day{streak !== 1 ? "s" : ""}</p>
         <p><strong>Premium:</strong> {isPremium ? "✅ Active" : "❌ Inactive"}</p>
-        {tils.length > 0 && (
+        {lastLearnedAt && (
           <p className="text-sm text-gray-500">
-            Last learned: {new Date(tils[0].created_at).toLocaleDateString()}
+            Last learned: {new Date(lastLearnedAt).toLocaleDateString()}
           </p>
         )}
       </div>
