@@ -1,18 +1,18 @@
 'use client';
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import CapyPopup from "../CapyPopup";
 
 export default function OnboardingWelcomePopup({
+  username,
   onNext,
   onSkip,
 }: {
+  username: string;
   onNext: (tilText: string) => void;
   onSkip: () => void;
 }) {
   const [til, setTIL] = useState("");
-  const router = useRouter();
 
   const handleSubmit = () => {
     if (til.trim()) {
@@ -22,29 +22,42 @@ export default function OnboardingWelcomePopup({
 
   return (
     <CapyPopup
-      title="Welcome to WHILT!"
-      message="I'm Professor Capy, your guide to learning something new every day. Let's get started by sharing something you've learned today."
+      title={`🐾 Hi there ${username}! I’m Professor Capy`}
+      message="I’ll be your guide to learning something new every day. Ready to begin?"
+      step={1}
+      totalSteps={6}
     >
+      {/* Prompt Heading */}
+      <h2 className="text-lg font-bold text-gray-800 mt-2 mb-2">
+        Post the first TIL
+      </h2>
+      <p className="text-sm text-gray-600 mb-4">
+        Share something you’ve learned by posting your first TIL (Today I Learned).
+      </p>
+
+      {/* TIL Input */}
       <input
         type="text"
         value={til}
         onChange={(e) => setTIL(e.target.value)}
-        placeholder="TIL there's an ancient statue of a capybara..."
+        placeholder="TIL there’s an ancient statue that depicts a capybara..."
         className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm"
       />
 
+      {/* Post Button */}
       <button
         onClick={handleSubmit}
         disabled={!til.trim()}
         className={`mt-5 w-full py-3 rounded-xl font-semibold ${
           til.trim()
-            ? "bg-[#0A524B] text-white hover:bg-[#094139]"
+            ? "bg-orange-500 text-white hover:bg-orange-600 transition"
             : "bg-gray-200 text-gray-500 cursor-not-allowed"
         }`}
       >
         Post a TIL
       </button>
 
+      {/* Skip Link */}
       <button
         onClick={onSkip}
         className="mt-3 text-sm text-gray-500 underline"

@@ -33,16 +33,17 @@ export default function OnboardingCategoryPopup({
 
   return (
     <CapyPopup
-      title="Looks like we’ve got a category!"
-      message={`Wow, I didn’t know that! Nice first TIL. Hmmm… to me that sounds like *${suggestedCategory}*. But you can pick something else if you'd prefer.`}
-      step={3}
+      title="Step 2: Categorise it 🗂️"
+      message={`Wow, I didn’t know that! Nice first TIL. Hmmm… to me that sounds like *${suggestedCategory}*. You can change it if you'd like.`}
+      step={2}
       totalSteps={6}
     >
-      {/* Category Selector */}
+      <label className="text-sm text-gray-700 mb-2 block">Choose a category:</label>
+
       <select
         value={category}
         onChange={(e) => setCategory(e.target.value)}
-        className="w-full border border-gray-300 rounded-xl px-4 py-3 mt-4 text-sm"
+        className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm"
       >
         {categories.map((cat) => (
           <option key={cat} value={cat}>
@@ -51,7 +52,6 @@ export default function OnboardingCategoryPopup({
         ))}
       </select>
 
-      {/* Confirm Selection */}
       <button
         onClick={() => onSelectCategory(category)}
         className="mt-5 w-full py-3 rounded-xl font-semibold bg-orange-500 text-white hover:bg-orange-600 transition"
@@ -59,7 +59,6 @@ export default function OnboardingCategoryPopup({
         Continue
       </button>
 
-      {/* Skip */}
       <button
         onClick={onSkip}
         className="mt-3 text-sm text-gray-500 underline"
