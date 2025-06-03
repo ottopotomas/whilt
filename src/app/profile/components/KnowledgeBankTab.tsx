@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "../../@/lib/supabaseClient";
-import type { TIL } from "../../../../types/til";
+import { supabase } from '@/lib/supabaseClient';
+import type { TIL } from "../../../lib/types";
 
 import ClusterGroup from "./ClusterGroup";
 import CapySuggestion from "./CapySuggestion";
@@ -54,8 +54,7 @@ export default function KnowledgeBankTab({ isPremium, isBasic }: KnowledgeBankTa
       {clusters.map((cluster, i) => (
         <ClusterGroup
           key={i}
-          title={cluster.title}
-          tils={cluster.tils}
+          cluster={{ title: cluster.title, tils: cluster.tils }}
           isPremium={isPremium}
           isBasic={isBasic}
         />
