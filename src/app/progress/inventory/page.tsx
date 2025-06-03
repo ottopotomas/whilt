@@ -1,52 +1,50 @@
-// src/app/progress/inventory/page.tsx
-
 'use client';
 
 import React from 'react';
 import type { Item, Rarity } from "@/lib/types";
 import InventoryItem from '@/components/Inventory/InventoryItem';
 
-const mockItems = [
+const mockItems: Item[] = [
   {
     name: 'Old Scroll',
     tag: '#chess',
     meta: '📅 Monthly Drop',
-    rarity: 'basic',
+    rarity: 'basic' as Rarity,
     icon: '🧾',
   },
   {
     name: 'Rough Amber',
     tag: '',
     meta: '⭐ 1 • Super Rare',
-    rarity: 'rare', // ✅ changed from 'super'
+    rarity: 'rare' as Rarity, // mapped correctly to existing Rarity
     icon: '🟧',
   },
   {
     name: 'Ancient Pyramid',
     tag: '',
     meta: '5 TILs • Dropped Apr 2024',
-    rarity: 'legendary',
+    rarity: 'legendary' as Rarity,
     icon: '🏛️',
   },
   {
     name: 'Hourglass',
     tag: '#localhistory',
     meta: '⭐ Rare',
-    rarity: 'rare',
+    rarity: 'rare' as Rarity,
     icon: '⌛',
   },
   {
     name: 'Framed Pictograph',
     tag: '',
     meta: '3 TILs',
-    rarity: 'basic',
+    rarity: 'basic' as Rarity,
     icon: '🖼️',
   },
   {
     name: 'Dinosaur Claw',
     tag: '#paleontology',
     meta: '',
-    rarity: 'rare',
+    rarity: 'rare' as Rarity,
     icon: '🦴',
   },
 ];
