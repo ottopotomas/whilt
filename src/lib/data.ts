@@ -72,3 +72,17 @@ export async function getTILComments(tilId: string): Promise<Comment[]> {
     user: comment.profiles || { username: "unknown" },
   }));
 }
+export async function getRecentTILs(): Promise<TIL[]> {
+  const { data, error } = await supabase
+    .from("tils")
+    .select("*")
+    .order("created_at", { ascending: false })
+    .limit(10);
+
+  if (error) {
+    console.error("Error fetching recent TILs:", error.message);
+    return [];
+  }
+
+  return data || [];
+}
