@@ -6,7 +6,9 @@ import { TierCard } from "@/components/Subscription/TierCard";
 import { tiers } from "@/lib/tiers";
 
 export default function SubscriptionPage() {
-  const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">("monthly");
+  const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">(
+    "monthly"
+  );
 
   return (
     <main className="max-w-6xl mx-auto px-4 py-12">
@@ -32,21 +34,21 @@ export default function SubscriptionPage() {
         </div>
 
         <div className="grid gap-8 md:grid-cols-3 mt-12">
-          {tiers.map((tier) => {
-  const price = billingCycle === "monthly" ? tier.price.monthly : tier.price.yearly;
-
-  return (
-    <TierCard
-      key={tier.name}
-      name={tier.name}
-      badge={tier.badge}
-      highlight={tier.highlight}
-      features={tier.features}
-      price={price}
-      billingCycle={billingCycle}
-    />
-  );
-})}
+          {tiers.map((tier) => (
+            <TierCard
+              key={tier.name}
+              name={tier.name}
+              badge={tier.badge}
+              highlight={tier.highlight}
+              features={tier.features}
+              price={
+                billingCycle === "monthly"
+                  ? tier.price.monthly
+                  : tier.price.yearly
+              }
+              billingCycle={billingCycle}
+            />
+          ))}
         </div>
       </div>
     </main>
