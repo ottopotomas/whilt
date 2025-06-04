@@ -12,10 +12,7 @@ export type Tier = {
 export const tiers: Tier[] = [
   {
     name: "Free",
-    price: {
-      monthly: 0,
-      yearly: 0,
-    },
+    price: { monthly: 0, yearly: 0 },
     highlight: "Great for casual learning",
     features: [
       { label: "Up to 10 TILs/day", included: true },
@@ -33,10 +30,7 @@ export const tiers: Tier[] = [
   {
     name: "Basic",
     badge: "Smarter Review",
-    price: {
-      monthly: 3.99,
-      yearly: 39,
-    },
+    price: { monthly: 3.99, yearly: 39 },
     highlight: "Optimize your memory with AI review",
     features: [
       { label: "Unlimited TILs/day", included: true },
@@ -54,10 +48,7 @@ export const tiers: Tier[] = [
   {
     name: "Premium",
     badge: "Full Optimisation",
-    price: {
-      monthly: 5.99,
-      yearly: 59,
-    },
+    price: { monthly: 5.99, yearly: 59 },
     highlight: "Maximum retention + exclusive rewards",
     features: [
       { label: "Everything in Basic", included: true },

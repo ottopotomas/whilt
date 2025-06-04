@@ -1,15 +1,22 @@
 "use client";
 
 import { Check, Lock } from "lucide-react";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 type TierCardProps = {
   name: string;
   badge?: string;
-  highlight?: string;
+  highlight: string;
   features: { label: string; included: boolean }[];
-  price: number; // number, from tier.price.monthly/yearly
+  price: number;
   billingCycle: "monthly" | "yearly";
 };
 
@@ -38,10 +45,9 @@ export function TierCard({
               </span>
             )}
           </CardTitle>
-          {highlight && <CardDescription>{highlight}</CardDescription>}
+          <CardDescription>{highlight}</CardDescription>
         </CardHeader>
 
-        {/* Price */}
         <div>
           <span className="text-3xl font-bold">
             {price === 0 ? "Free" : `£${price}`}
@@ -53,7 +59,6 @@ export function TierCard({
           )}
         </div>
 
-        {/* Features */}
         <ul className="space-y-2 text-sm text-muted-foreground flex-1">
           {features.map((feature, idx) => (
             <li key={idx} className="flex items-center gap-2">
@@ -68,9 +73,9 @@ export function TierCard({
         </ul>
       </CardContent>
 
-      {/* CTA Button */}
       <CardFooter>
         <button
+          type="button"
           className={cn(
             "w-full py-2 rounded-md text-white font-semibold",
             name === "Free"
@@ -78,6 +83,7 @@ export function TierCard({
               : "bg-teal-600 hover:bg-teal-700"
           )}
           disabled={name === "Free"}
+          aria-disabled={name === "Free"}
         >
           {name === "Free" ? "Current Plan" : `Upgrade to ${name}`}
         </button>
