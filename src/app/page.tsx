@@ -1,8 +1,9 @@
-import TILCard from "./til/TILCard"; // or your actual TIL feed component
-import { getRecentTILs } from "@/lib/data"; // server-side function to fetch TILs
+import TILCard from "./til/TILCard";
+import { getRecentTILs } from "@/lib/data";
+import { TIL } from "@/lib/types"; // Optional: type safety if you have it
 
 export default async function HomePage() {
-  const tils = await getRecentTILs(); // Fetch from DB or static list
+  const tils: TIL[] = await getRecentTILs();
 
   return (
     <main className="max-w-4xl mx-auto px-4 py-12">
