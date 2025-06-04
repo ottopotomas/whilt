@@ -1,5 +1,12 @@
-"use client";
+// src/app/layout.tsx
 
-export default function SubscriptionPage() {
-  return <div>Subscription minimal test</div>;
+import "./globals.css"; // your global styles
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <head />
+      <body>{children}</body>
+    </html>
+  );
 }
