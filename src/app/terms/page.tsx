@@ -185,22 +185,20 @@ export default function TermsPage() {
       </section>
 
          <section id="refunds" className="mb-8">
-        <h2 className="text-xl font-semibold mb-2">15. Refund Policy</h2>
-        <p>
-          We offer refunds within 14 days of purchase for WHILT Premium
-          subscriptions, provided that you have not significantly used key
-          features such as AI test generation or Premium-only content. If you
-          believe you're eligible for a refund, please contact us at{" "}
-          <a
-            href="mailto:support@whilt.app"
-            className="text-blue-600 underline"
-          >
-            support@whilt.app
-          </a>
-          . Refunds are issued at our discretion and are typically processed
-          within 5–10 business days.
-        </p>
-      </section>
+  <h2 className="text-xl font-semibold mb-2">15. Refund Policy</h2>
+  <p>
+    We offer refunds within <strong>7 days of purchase</strong> for WHILT Premium subscriptions,
+    provided you have not made significant use of key features such as AI-generated tests,
+    Premium-only content, or advanced review tools. If you believe you're eligible for a refund,
+    please contact us at{" "}
+    <a href="mailto:support@whilt.app" className="text-blue-600 underline">
+      support@whilt.app
+    </a>
+    . Refunds are issued at our discretion and are typically processed within 5–10 business days.
+    All payments are handled securely via our payment provider, Paddle.com.
+  </p>
+</section>
+
     </main>
   );
 }
