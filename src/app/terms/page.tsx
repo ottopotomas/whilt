@@ -1,7 +1,5 @@
 // src/app/terms/page.tsx
 
-import React from "react";
-
 export default function TermsPage() {
   return (
     <main className="max-w-3xl mx-auto px-4 py-12 text-base leading-relaxed text-gray-800">
